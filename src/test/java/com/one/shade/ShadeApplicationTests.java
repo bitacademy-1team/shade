@@ -1,10 +1,10 @@
-package com.one.md;
+package com.one.shade;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MdApplicationTests {
+class ShadeApplicationTests {
 
 	@Test
 	void contextLoads() {

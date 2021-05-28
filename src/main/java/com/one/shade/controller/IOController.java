@@ -1,4 +1,4 @@
-package com.one.md.controller;
+package com.one.shade.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

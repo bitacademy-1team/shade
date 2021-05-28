@@ -1,4 +1,4 @@
-package com.one.md;
+package com.one.shade;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
 @SpringBootApplication
-public class MdApplication {
+public class ShadeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MdApplication.class, args);
+		SpringApplication.run(ShadeApplication.class, args);
 	}
 
 }
