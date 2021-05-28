@@ -1,0 +1,57 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.0'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id "com.github.node-gradle.node" version "2.2.3"
+}
+
+/**
+ * npm install start
+ */
+node {
+	version = '15.1.0'
+	download = true
+	nodeModulesDir = file("${projectDir}/src/main/resources/static/frontend")
+}
+
+task copyFrontLib(type: Copy) {
+	from "${projectDir}/src/main/resources/static/frontend"
+	into "${projectDir}/build/resources/main/static/frontend/."
+}
+
+copyFrontLib.dependsOn npmInstall
+compileJava.dependsOn copyFrontLib
+
+
+/**
+ * npm install end
+ */
+
+group = 'com.one'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	implementation('com.h2database:h2')
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+}
+
+test {
+	useJUnitPlatform()
+}
