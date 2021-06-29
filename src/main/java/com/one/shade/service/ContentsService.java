@@ -6,7 +6,9 @@ import com.one.shade.vo.ContentMovieDetailVO;
 import com.one.shade.vo.ContentSummaryVO;
 import com.one.shade.vo.ContentsListVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -23,7 +25,7 @@ public class ContentsService {
     public List<ContentsListVO> listMovie(String date, Pageable pageable){
         //return contentsRepository.listMovie(date,pageable).stream().map(ContentsListVO::new).collect(Collectors.toList());
 
-        pageable = PageRequest.of(0, pageable.getPageSize());
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
         Page<Contents> managers = contentsRepository.listMovie(date,pageable);
 
         return managers.stream().map(
@@ -36,9 +38,28 @@ public class ContentsService {
     }
 
     @Transactional
-    public List<ContentMovieDetailVO> listMovieDetail(String date){
-        return contentsRepository.findAllWithGenre(date).stream().map(ContentMovieDetailVO::new).collect(Collectors.toList());
+    public List<ContentsListVO> movieList(Pageable pageable,List<Long> platform_ids, Long genre_id){
+        //return contentsRepository.listMovie(date,pageable).stream().map(ContentsListVO::new).collect(Collectors.toList());
+
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+        List<Contents> managers = contentsRepository.movieList(pageable,platform_ids,genre_id);
+
+        return managers.stream().map(
+                contents -> new ContentsListVO(
+                        contents.getContents_id(),
+                        contents.getTitle(),
+                        contents.getPoster()
+                )).collect(Collectors.toList());
+
     }
+
+
+
+    @Transactional
+    public ContentMovieDetailVO movieDetail(Long contents_id){
+        return contentsRepository.movieDetail(contents_id);
+    }
+
 
     @Transactional
     public List<ContentSummaryVO> listSummary(){

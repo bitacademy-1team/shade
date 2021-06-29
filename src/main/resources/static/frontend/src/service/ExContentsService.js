@@ -18,11 +18,11 @@ export default function ExContentsService(query, pageNumber) {
         axios({
             method: 'GET',
             url: 'http://localhost:8080/movieList',
-            params: {page: pageNumber,size:pageNumber*20},
+            params: {page: pageNumber*20,size:20},
             cancelToken: new axios.CancelToken(c => cancel = c)
         }).then(res => {
             setList(prevList => {
-                return [...new Set([...prevList, ...res.data.map(l => "https://images.justwatch.com"+l.poster)])]   //  title -> poster
+                return [...new Set([...prevList, ...res.data.map(l => l)])]   //  title -> poster
             }) 
             setHasMore(res.data.length > 0)
             setLoading(false)

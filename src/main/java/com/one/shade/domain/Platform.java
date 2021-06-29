@@ -2,10 +2,7 @@ package com.one.shade.domain;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @ToString
@@ -17,6 +14,14 @@ public class Platform {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long con_plat_id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "contents_id",insertable = false,updatable = false)
+    private Contents contents;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "platform_id",insertable = false,updatable = false)
+    private GenreName platform_name;
 
     private Long contents_id;
 

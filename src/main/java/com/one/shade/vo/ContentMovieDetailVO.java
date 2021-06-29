@@ -1,43 +1,50 @@
 package com.one.shade.vo;
 
 import com.one.shade.domain.Contents;
-import com.one.shade.domain.Genre;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.Id;
-import java.util.Collection;
-import java.util.Set;
 
 @Getter
 @AllArgsConstructor
-@ToString(exclude = "genre")
-public class ContentMovieDetailVO {
+@ToString
+@NoArgsConstructor
+public class ContentMovieDetailVO extends Contents{
 
     @Id
     private Long contents_id;
 
-    private String title;
+    private String genre_names;
 
-    private String opendate;
+    private String genre_ids;
+
+    private String actor_names;
+
+    private String actor_ids;
+
+    private String character_names;
+
+    private String director_name;
+
+    private Long director_id;
+
+    private String title;
 
     private Long playtime;
 
-    private String summary;
+    private String opendate;
 
-    private String poster;
+    private String platform_names;
 
-    private Collection<Genre> genre;
+    private String monetization_types;
 
-    public ContentMovieDetailVO(Contents entity){
-        this.contents_id =entity.getContents_id();
-        this.title = entity.getTitle();
-        this.opendate = entity.getOpendate();
-        this.playtime = entity.getPlaytime();
-        this.summary = entity.getSummary();
-        this.poster = entity.getPoster();
-        this.genre = entity.getContentGenreList();
-    }
+    private String retail_prices;
+
+    private String urls;
+
+    private String presentation_types;
 
 }

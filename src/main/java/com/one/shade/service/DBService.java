@@ -1,6 +1,5 @@
 package com.one.shade.service;
 
-import com.one.shade.domain.Contents;
 import com.one.shade.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

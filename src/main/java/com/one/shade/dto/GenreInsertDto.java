@@ -1,9 +1,6 @@
 package com.one.shade.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @NoArgsConstructor
@@ -16,6 +13,5 @@ public class GenreInsertDto {
     private Long genre_id;
 
     private String genre_name;
-
 
 }

@@ -3,6 +3,7 @@ package com.one.shade.controller;
 import com.one.shade.domain.*;
 import com.one.shade.service.ContentsService;
 import com.one.shade.service.DBService;
+import com.one.shade.vo.ContentMovieDetailVO;
 import com.one.shade.vo.ContentSummaryVO;
 import com.one.shade.vo.ContentsListVO;
 import org.json.simple.JSONArray;
@@ -76,10 +77,19 @@ public class ContentsController {
         return str;
     }
 
-
     @GetMapping("/movieList")
-    public List<ContentsListVO> MovieList(@PageableDefault(page = 0)Pageable pageRequest){
-        return contentsService.listMovie("20190608",pageRequest);
+    public List<ContentsListVO> MovieList(@PageableDefault(page = 0) Pageable pageRequest){
+        List<Long> platform_ids = new ArrayList<>();
+        platform_ids = null;
+        Long genre_id = null;
+
+        return contentsService.movieList(pageRequest,platform_ids,genre_id);
+    }
+
+    @GetMapping("/movieDetail")
+    public ContentMovieDetailVO MovieList(Long contents_id){
+        System.out.println(contentsService.movieDetail(contents_id));
+        return contentsService.movieDetail(contents_id);
     }
 
 
