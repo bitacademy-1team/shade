@@ -39,6 +39,18 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private com.one.shade.domain.ERole roles;
 
+    private String gender;
+
+    private String nickname;
+
+    private String sns_provider;
+
+    private String birth;
+
+    private String join_date;
+
+    private String leave_date;
+
 
     public User(String username, String email, String password) {
         this.username = username;
