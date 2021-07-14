@@ -35,4 +35,8 @@ public class Platform {
 
     private String presentation_type;
 
+    private String object_type;
+
+    private Long episode_id;
+
 }

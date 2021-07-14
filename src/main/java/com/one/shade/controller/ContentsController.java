@@ -90,6 +90,7 @@ public class ContentsController {
 
     @GetMapping("/movieDetail")
     public ContentMovieDetailVO movieDetail(Long contents_id){
+        //로그인한 사용자라면 로그인한 사용자의 id 와 contents_id를 사용해서 contents_user update or insert
         System.out.println(contentsService.movieDetail(contents_id));
         return contentsService.movieDetail(contents_id);
     }
@@ -222,7 +223,11 @@ public class ContentsController {
 
         return "Hello, Spring boot!";
     }
-
+    @RequestMapping("/api2")
+    public String api2(@RequestBody Map<String,Object> map){
+        //DBService.epiSave(map);
+        return "Hello, Spring boot!";
+    }
 
 
 }

@@ -13,7 +13,7 @@ import java.util.Collection;
 @NamedNativeQuery(
         name = "ContentMovieDetailVO",
         query = "SELECT " +
-                "   c.contents_id,genre_names,genre_ids,actor_names,actor_ids,character_names,director_name,director_id,c.title,c.playtime,c.opendate,platform_names,monetization_types,retail_prices,urls,presentation_types " +
+                "   c.contents_id,c.summary,c.video,genre_names,genre_ids,actor_names,actor_ids,character_names,director_name,director_id,c.title,c.playtime,c.opendate,platform_names,monetization_types,retail_prices,urls,presentation_types " +
                 "FROM " +
                 "   contents c " +
                 "LEFT join " +
@@ -79,6 +79,8 @@ import java.util.Collection;
                 targetClass = ContentMovieDetailVO.class,
                 columns = {
                         @ColumnResult(name = "contents_id",type = Long.class),
+                        @ColumnResult(name = "summary",type = String.class),
+                        @ColumnResult(name = "video",type = String.class),
                         @ColumnResult(name = "genre_names",type = String.class),
                         @ColumnResult(name = "genre_ids",type = String.class),
                         @ColumnResult(name = "actor_names",type = String.class),

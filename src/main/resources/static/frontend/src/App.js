@@ -10,7 +10,8 @@ import Profile from './components/user/Profile';
 import BoardUser from './components/user/BoardUser';
 import BoardAdmin from './components/user/BoardAdmin';
 import MovieRecommendListComponent from './components/MovieRecommendListComponent';
-
+import Contents from './components/contents/contents'
+import api from './components/api'
 function App() {
 
   return (
@@ -29,6 +30,8 @@ function App() {
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/user" component={BoardUser} />
               <Route exact path="/admin" component={BoardAdmin} />
+              <Route exact path="/contents" component={Contents} />
+              <Route exact path="/api" component={api} />
             </Switch>
           </div>
       </Router>

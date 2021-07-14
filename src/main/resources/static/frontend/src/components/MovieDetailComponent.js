@@ -17,6 +17,8 @@ export default function MovieDetailComponent() {
         <>
             <div>
                 <p>{movieDetail.genre_names}</p>
+                {movieDetail.title}
+                {movieDetail.director_name}
             </div>
         </>
     )

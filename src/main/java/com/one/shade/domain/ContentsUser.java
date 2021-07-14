@@ -1,20 +1,22 @@
 package com.one.shade.domain;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import com.one.shade.dto.ContentsUserDto;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Builder
+@Entity(name = "contents_user")
+@Getter
+@ToString
+@Setter
 public class ContentsUser {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long con_user_id;
 
     private Long id;
@@ -25,5 +27,25 @@ public class ContentsUser {
 
     private Long view_count;
 
-    private String visit_last_date;
+    private LocalDateTime visit_last_date;
+
+    private LocalDateTime last_check_date;
+
+    private Float rating;
+
+    @Builder
+    private ContentsUser(ContentsUserDto contentsUserDto){
+        this.id = contentsUserDto.getId();
+        this.contents_id = contentsUserDto.getContents_id();
+        this.view_count = contentsUserDto.getView_count();
+        this.visit_last_date = contentsUserDto.getVisit_last_date();
+        this.last_check_date = contentsUserDto.getLast_check_date();
+        this.check_like = contentsUserDto.getCheck_like();
+        this.rating = contentsUserDto.getRating();
+    }
+
+    @PreUpdate
+    public void LocalDateTime() {
+        this.visit_last_date = LocalDateTime.now();
+    }
 }

@@ -17,6 +17,10 @@ public class ContentMovieDetailVO extends Contents{
     @Id
     private Long contents_id;
 
+    private String video;
+
+    private String summary;
+
     private String genre_names;
 
     private String genre_ids;
