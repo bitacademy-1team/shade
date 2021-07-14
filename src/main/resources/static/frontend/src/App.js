@@ -2,8 +2,7 @@ import React from 'react';
 import './App.css';
 import MovieDetailComponent from './components/MovieDetailComponent';
 import MovieListComponent from './components/MovieListComponent.js';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'; 
-import Header from './components/user/Header';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Home from './components/user/Home';
 import Login from './components/user/Login';
 import Join from './components/user/Join';
@@ -12,6 +11,8 @@ import BoardUser from './components/user/BoardUser';
 import BoardAdmin from './components/user/BoardAdmin';
 import OAuth2RedirectHandler from './service/oauth2/OAuth2RedirectHandler'
 import UpdateUser from './components/user/UpdateUser';
+import MovieRecommendListComponent from './components/MovieRecommendListComponent';
+import Header from './components/user/Header';
 
 function App() {
 
@@ -24,7 +25,7 @@ function App() {
             <Switch>
               <Route path = "/movieList" component = {MovieListComponent}></Route>
               <Route path = "/movieDetail/:contents_id" component = {MovieDetailComponent}></Route>
-        
+              <Route path = "/movieRecommend" component = {MovieRecommendListComponent}></Route>
               <Route exact path={["/", "/home"]} component={Home} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/join" component={Join} />

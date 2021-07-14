@@ -50,7 +50,6 @@ public class ContentsService {
                         contents.getTitle(),
                         contents.getPoster()
                 )).collect(Collectors.toList());
-
     }
 
 
