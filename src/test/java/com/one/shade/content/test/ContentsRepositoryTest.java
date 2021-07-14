@@ -353,4 +353,34 @@ public class ContentsRepositoryTest{
 
     }
 
+    @Test
+    public void myRecommendTest(){
+        Long id = 104l;
+        String str = "186121,2193,10236,49192,49637,60409,79031,89663,91953,98784,104510,104892,142645,183656,148548,164877";
+        String [] strarr = str.split(",");
+
+        for (int i = 0 ; i< strarr.length;i++){
+            Long contents_id = Long.valueOf(strarr[i]);
+            String sql = "SELECT (genre_score+actor_score+director_score) AS total_score FROM (SELECT IFNULL(SUM(genre_score),0) AS genre_score FROM(SELECT genre_id from contents_genre WHERE contents_id = "+contents_id+" ) cg LEFT JOIN (SELECT genre_id,gc/gg AS genre_score FROM (SELECT genre_id,COUNT(*) AS gc FROM contents_genre WHERE contents_id IN (SELECT contents_id FROM (select contents_id from contents_user WHERE id = "+id+" AND check_like = 'like' ORDER BY visit_last_date LIMIT 30) s) GROUP BY genre_id ORDER BY gc DESC LIMIT 10) a,(select SUM(a.cc) AS gg FROM (SELECT COUNT(*) AS cc FROM contents_genre WHERE contents_id IN (SELECT contents_id FROM (select contents_id from contents_user WHERE id = "+id+" AND check_like = 'like' ORDER BY visit_last_date LIMIT 30) s) GROUP BY genre_id LIMIT 10) a )b)gs ON cg.genre_id = gs.genre_id) a,(SELECT IFNULL(SUM(score),0) AS actor_score FROM(SELECT people_id FROM casting WHERE contents_id = "+contents_id+" AND role = 'ACTOR') ca JOIN (SELECT (pc/total)*1.7 AS score,people_id FROM(SELECT SUM(pc) AS total FROM (SELECT * FROM (SELECT people_id,COUNT(*) AS pc FROM casting c WHERE role = 'ACTOR' and contents_id IN (SELECT contents_id FROM (select contents_id from contents_user WHERE id = "+id+" AND check_like = 'like' ORDER BY visit_last_date LIMIT 50) s) GROUP BY people_id) as pp WHERE pp.pc > 1 ORDER BY pp.pc DESC LIMIT 30) a) aa,(SELECT * FROM (SELECT people_id,COUNT(*) AS pc FROM casting c WHERE role = 'ACTOR' and contents_id IN (SELECT contents_id FROM (select contents_id from contents_user WHERE id = "+id+" AND check_like = 'like' ORDER BY visit_last_date LIMIT 50) s) GROUP BY people_id) pp WHERE pp.pc > 1 ORDER BY pp.pc DESC LIMIT 30)bb) pc ON ca.people_id = pc.people_id) b,(SELECT IFNULL(SUM(score),0) AS director_score FROM(SELECT people_id FROM casting WHERE contents_id = "+contents_id+" AND role = 'DIRECTOR' LIMIT 1) cd LEFT JOIN(SELECT (pc/total)*1.8 AS score,people_id FROM(SELECT SUM(pc) AS total FROM (SELECT * FROM (SELECT people_id,COUNT(*) AS pc FROM casting c WHERE role = 'DIRECTOR' and contents_id IN (SELECT contents_id FROM (select contents_id from contents_user WHERE id = "+id+" AND check_like = 'like' ORDER BY visit_last_date LIMIT 100) s) GROUP BY people_id) pp WHERE pp.pc > 1 ORDER BY pp.pc DESC LIMIT 5) a) aa,(SELECT * FROM (SELECT people_id,COUNT(*) AS pc FROM casting c WHERE role = 'DIRECTOR' and contents_id IN (SELECT contents_id FROM (select contents_id from contents_user WHERE id = "+id+" AND check_like = 'like' ORDER BY visit_last_date LIMIT 100) s) GROUP BY people_id) pp WHERE pp.pc > 1 ORDER BY pp.pc DESC LIMIT 5)bb) ds ON cd.people_id = ds.people_id) c";
+            Query nativeQuery =  em.createNativeQuery(sql);
+            JpaResultMapper jpaMapper = new JpaResultMapper();
+            GenreRatingVO genreRatingVO = jpaMapper.uniqueResult(nativeQuery,GenreRatingVO.class);
+            float total_score = genreRatingVO.getTotal_score().floatValue();
+            total_score = 1+total_score;
+            System.out.println(total_score);
+            ContentsUser contentsUser1 = ContentsUser.builder()
+                    .contentsUserDto(
+                            ContentsUserDto.builder()
+                                    .id(id)
+                                    .contents_id(contents_id)
+                                    .view_count(1l)
+                                    .visit_last_date(LocalDateTime.now())
+                                    .check_like("like")
+                                    .last_check_date(LocalDateTime.now())
+                                    .rating(total_score)
+                                    .build())
+                    .build();
+            contentsUserRepository.save(contentsUser1);
+        }
+    }
 }
