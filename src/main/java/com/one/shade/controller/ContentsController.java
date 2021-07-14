@@ -1,8 +1,10 @@
 package com.one.shade.controller;
 
 import com.one.shade.domain.*;
+import com.one.shade.dto.ContentsListDto;
 import com.one.shade.service.ContentsService;
 import com.one.shade.service.DBService;
+import com.one.shade.util.JepRecommend;
 import com.one.shade.vo.ContentMovieDetailVO;
 import com.one.shade.vo.ContentSummaryVO;
 import com.one.shade.vo.ContentsListVO;
@@ -33,7 +35,7 @@ public class ContentsController {
 
     //줄거리를 불러와 파이썬에서 키워드 추출
     @GetMapping("/dbKeyword")
-    public String Keyword(){
+    public String keyword(){
 
         List<ContentSummaryVO> list = contentsService.listSummary();
         List<Map> summary = new ArrayList<>();
@@ -78,18 +80,25 @@ public class ContentsController {
     }
 
     @GetMapping("/movieList")
-    public List<ContentsListVO> MovieList(@PageableDefault(page = 0) Pageable pageRequest){
+    public List<ContentsListVO> movieList(@PageableDefault(page = 0) Pageable pageRequest){
         List<Long> platform_ids = new ArrayList<>();
         platform_ids = null;
         Long genre_id = null;
-
+        System.out.println(pageRequest.getPageNumber());
         return contentsService.movieList(pageRequest,platform_ids,genre_id);
     }
 
     @GetMapping("/movieDetail")
-    public ContentMovieDetailVO MovieList(Long contents_id){
+    public ContentMovieDetailVO movieDetail(Long contents_id){
+        //로그인한 사용자라면 로그인한 사용자의 id 와 contents_id를 사용해서 contents_user update or insert
         System.out.println(contentsService.movieDetail(contents_id));
         return contentsService.movieDetail(contents_id);
+    }
+
+    @GetMapping("/movieRecommend")
+    public List<ContentsListDto> recommendMovieList(){
+        String title = "어벤져스";
+        return JepRecommend.titleRecommend(title);
     }
 
 
@@ -214,7 +223,11 @@ public class ContentsController {
 
         return "Hello, Spring boot!";
     }
-
+    @RequestMapping("/api2")
+    public String api2(@RequestBody Map<String,Object> map){
+        //DBService.epiSave(map);
+        return "Hello, Spring boot!";
+    }
 
 
 }

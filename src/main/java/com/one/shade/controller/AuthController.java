@@ -68,6 +68,7 @@ public class AuthController {
         if(userRepository.existsByUsername(signupRequest.getUsername())) {
             throw new BadRequestException("현재 사용중인 아이디입니다.");
         }
+
         if(userRepository.existsByEmail(signupRequest.getEmail())) {
             return new ResponseEntity(new MessageResponse(false, "현재 사용중인 이메일입니다."),
                     HttpStatus.BAD_REQUEST);

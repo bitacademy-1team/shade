@@ -27,7 +27,7 @@ public class CustomizedContentsRepositoryImpl implements CustomizedContentsRepos
                 .on(QContents.contents.contents_id.eq(QGenre.genre.contents_id))
                 .where(PredicateQuery.search(platform_ids,genre_id))
                 .groupBy(QContents.contents.contents_id)
-                .orderBy(QContents.contents.opendate.desc())
+                .orderBy(QContents.contents.opendate.desc(),QContents.contents.title.desc())
                 .limit(pageable.getPageSize())
                 .offset(pageable.getPageNumber())
                 .fetch();

@@ -26,4 +26,8 @@ public class Casting {
     private String character_name;
 
     private String role;
+
+    private String object_type;
+
+    private Long season_id;
 }
