@@ -2,7 +2,12 @@ import React, { useRef, useState } from 'react';
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import AuthService from "../../service/user/AuthService";
+import {ACCESS_TOKEN, FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL, KAKAO_AUTH_URL, NAVER_AUTH_URL} from  '../../service/oauth2/OAuth'
+import googleLogo from '../../img/google-logo.png';
+import fbLogo from '../../img/fb-logo.png';
+import naverLogo  from '../../img/naver-logo.png';
+import kakaoLogo  from '../../img/kakao-logo.png';
+import UserUtils from '../../service/user/UserUtils';
 
 
 const required = (value) => {
@@ -25,6 +30,7 @@ const Login = (props) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
 
+
   const onChangeUsername = (e) => {
     const username = e.target.value;
     setUsername(username);
@@ -43,8 +49,11 @@ const Login = (props) => {
 
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(username, password)
-        .then(() => {
+
+      UserUtils.login(username, password)
+        .then((res) => {
+          localStorage.setItem(ACCESS_TOKEN, res.accessToken);
+          console.log(res.data)
           props.history.push("/");
           window.location.reload();
         },
@@ -114,6 +123,17 @@ const Login = (props) => {
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
       </div>
+
+      <div className="social-login">
+                <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
+                    <img src={googleLogo} alt="Google" /> 구글 로그인</a>
+                <a className="btn btn-block social-btn google" href={FACEBOOK_AUTH_URL}>
+                    <img src={fbLogo} alt="Facebook" /> 페이스북 로그인</a>
+                <a className="btn btn-block social-btn google" href={NAVER_AUTH_URL}>
+                    <img src={naverLogo} alt="Naver" /> 네이버 로그인</a>
+                <a className="btn btn-block social-btn google" href={KAKAO_AUTH_URL}>
+                    <img src={kakaoLogo} alt="Kakao" /> 카카오톡 로그인</a>
+            </div>
     </div>
 
   );

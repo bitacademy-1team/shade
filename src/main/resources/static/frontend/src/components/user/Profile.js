@@ -1,34 +1,54 @@
-import React from 'react';
-import AuthService from "../../service/user/AuthService";
+import React, { useEffect, useState } from 'react';
+import UserUtils from '../../service/user/UserUtils';
 
-const Profile = () => {
+const Profile = (props) => {
 
-    const currentUser = AuthService.getCurrentUser();
+
+    const [currentUser, setCurrentUser] = useState(null);
+
+    const updateUser = () =>{
+        props.history.push('/updateUser/');
+    }
+
+
+    const user = () => {
+        
+        UserUtils.getCurrentUser()
+        .then((res) => {
+            console.log("res:", res);
+            setCurrentUser(res)
+        })  
+      } 
+
+      useEffect(() => {
+        user();
+      },[]);
+
 
 
     return (
         <div className="container">
-         <header className="jumbotron">
-            <h3>
-                <strong>{currentUser.username}</strong>ProFile
-            </h3>
-            </header>
-            <p>
-                <strong>Token:</strong> {currentUser.accessToken.substring(0,20)}
-                ...{''}
-                {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
-            </p>
-            <p>
-                <strong>Id:</strong>    {currentUser.id}
-            </p>
-            <p>
-                <strong>Email:</strong> {currentUser.email}
-             </p>
-            <strong>Authorities:</strong>
-            <ul>
-                {currentUser.roles &&
-                    currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
-            </ul>
+            {currentUser ? (
+                <div>
+                    <header className="jumbotron">
+                        <h3>
+                            <strong>{currentUser.username}</strong>ProFile
+                        </h3>
+                    </header>
+                    <p>
+                        <strong>Id:</strong>    {currentUser.id}
+                    </p>
+                    <p>
+                        <strong>Email:</strong> {currentUser.email}
+                    </p>
+                    <strong>Authorities:</strong> {currentUser.roles}
+                </div>
+            ) : (
+                <div>
+                    false
+                </div>
+            )}
+             <button variant="warning" onClick={updateUser}>    수정     </button>       
         </div>
     );
 };

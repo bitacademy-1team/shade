@@ -1,4 +1,4 @@
-package com.one.shade.config.auth;
+package com.one.shade.security.auth;
 
 import com.one.shade.domain.User;
 import lombok.Data;

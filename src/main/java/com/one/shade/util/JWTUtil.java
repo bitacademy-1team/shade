@@ -1,6 +1,6 @@
 package com.one.shade.util;
 
-import com.one.shade.config.auth.PrincipalDetails;
+import com.one.shade.security.auth.PrincipalDetails;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,24 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import AuthService from "../../service/user/AuthService";
+import { ACCESS_TOKEN } from '../../service/oauth2/OAuth';
+import UserUtils from '../../service/user/UserUtils';
 
 const Header = () => {
 
-    const [showAdminBoard, setShowAdminBoard] = useState(false);
-const [currentUser, setCurrentUser] = useState(undefined);
 
+  const [showAdminBoard, setShowAdminBoard] = useState(false);
+  const [currentUser, setCurrentUser] = useState(undefined);
+  const [loading,setLoding] = useState(false);
+
+  const loadCurrentlyLoggedInUser = () => {
+      setLoding(true);
+  
+      UserUtils.getCurrentUser()
+      .then((res) => {
+          setCurrentUser(res)
+      }).catch(error => {
+         setLoding(false) 
+      });    
+    } 
 
 useEffect(() => {
-  const user = AuthService.getCurrentUser();
-
-  if(user) {
-    setCurrentUser(user);
-    setShowAdminBoard(user.roles.includes("ROLE-ADMIN"));
-  }
+  loadCurrentlyLoggedInUser();
+  
 },[]);
 
 const logOut = () => {
-  AuthService.logout();
+  localStorage.removeItem(ACCESS_TOKEN);
 };
 
   return (

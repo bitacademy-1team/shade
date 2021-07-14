@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import './App.css';
 import MovieDetailComponent from './components/MovieDetailComponent';
 import MovieListComponent from './components/MovieListComponent.js';
@@ -10,6 +10,8 @@ import Join from './components/user/Join';
 import Profile from './components/user/Profile';
 import BoardUser from './components/user/BoardUser';
 import BoardAdmin from './components/user/BoardAdmin';
+import OAuth2RedirectHandler from './service/oauth2/OAuth2RedirectHandler'
+import UpdateUser from './components/user/UpdateUser';
 
 function App() {
 
@@ -17,7 +19,7 @@ function App() {
     <div> 
      
       <Router> 
-      {/* <Header />            */}
+      <Header />           
           <div className="container">
             <Switch>
               <Route path = "/movieList" component = {MovieListComponent}></Route>
@@ -29,6 +31,8 @@ function App() {
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/user" component={BoardUser} />
               <Route exact path="/admin" component={BoardAdmin} />
+              <Route exact path="/updateUser" component={UpdateUser} />
+              <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}></Route>
             </Switch>
           </div>
       </Router>

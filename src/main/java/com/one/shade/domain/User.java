@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -36,8 +37,16 @@ public class User {
     @Size(max = 120)
     private String password;
 
+    private String nickname;
+    private String gender;
+    private String birthday;
+    private LocalDate joinDate;
+
     @Enumerated(value = EnumType.STRING)
-    private com.one.shade.domain.ERole roles;
+    private ERole roles;
+    @Enumerated(value = EnumType.STRING)
+    private AuthProvider provider;
+    private String providerId;
 
 
     public User(String username, String email, String password) {

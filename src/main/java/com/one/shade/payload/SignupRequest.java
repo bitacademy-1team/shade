@@ -1,5 +1,6 @@
 package com.one.shade.payload;
 
+import com.one.shade.domain.ERole;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -23,5 +24,9 @@ public class SignupRequest {
     @Size(min = 6, max = 40)
     private String password;
 
-    private Set<String> role;
+    private String nickname;
+    private String gender;
+    private String birthday;
+
+    private ERole role;
 }
