@@ -65,6 +65,7 @@ public class AuthController {
             throw new BadRequestException("현재 사용중인 아이디입니다.");
         }
 
+
         if(userRepository.existsByEmail(signupRequest.getEmail())) {
             return new ResponseEntity(new MessageResponse(false, "현재 사용중인 이메일입니다."),
                     HttpStatus.BAD_REQUEST);
@@ -77,6 +78,6 @@ public class AuthController {
         user.setRoles(ERole.ROLE_USER);
 
         userRepository.save(user);
-        return ResponseEntity.ok(new MessageResponse(true,"회원가입에 성고하셨습니다."));
+        return ResponseEntity.ok(new MessageResponse(true,""));
     }
 }
