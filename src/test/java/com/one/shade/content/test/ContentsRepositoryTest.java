@@ -1,6 +1,6 @@
 package com.one.shade.content.test;
 
-import com.one.shade.config.auth.PrincipalDetails;
+import com.one.shade.security.auth.PrincipalDetails;
 import com.one.shade.domain.*;
 import com.one.shade.dto.ContentsListDto;
 import com.one.shade.dto.ContentsUserDto;
@@ -254,7 +254,7 @@ public class ContentsRepositoryTest{
             user.setEmail(email);
             user.setPassword(bCryptPasswordEncoder.encode(password));
             user.setRoles(ERole.ROLE_USER);
-            user.setBirth(b+"-01-01");
+            user.setBirthday(b+"-01-01");
             user.setNickname("테스트"+i);
             user.setGender("M");
             System.out.println("현재 "+i+"번째 아이디 생성");

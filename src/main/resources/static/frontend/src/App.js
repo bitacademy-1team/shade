@@ -49,7 +49,7 @@ function App() {
               {/* <Route exact path="/test" component={Headerbox}/> */}
               <Route exact path="/contents" component={Contents} />
               <Route exact path="/api" component={api} />
-              <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}></Route>
+              <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
             </Switch>
           </Grid>
         </Grid>

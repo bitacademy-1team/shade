@@ -1,7 +1,9 @@
 package com.one.shade.controller;
 
 import com.one.shade.domain.AuthProvider;
+import com.one.shade.dto.MailDto;
 import com.one.shade.security.auth.PrincipalDetails;
+import com.one.shade.service.UserMailService;
 import com.one.shade.service.UserService;
 import com.one.shade.util.JWTUtil;
 import com.one.shade.exception.BadRequestException;
@@ -13,6 +15,9 @@ import com.one.shade.payload.JwtResponse;
 import com.one.shade.payload.MessageResponse;
 import com.one.shade.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,6 +40,7 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final UserMailService userMailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JWTUtil JWTUtil;
 
@@ -115,5 +121,30 @@ public class AuthController {
         return ResponseEntity.ok(userService.updateUser(user.getUsername(), user));
     }
 
+    // Id,Pw 찾기
+    @GetMapping("/findId/{email}")
+    public ResponseEntity<?> findId(@PathVariable String email){
+        System.out.println("findId Controller: " + (userMailService.findId(email)).get().getUsername());
+        return ResponseEntity.ok((userMailService.findId(email)).get().getUsername());
+    }
+
+    @GetMapping("/findPw/{username}/{email}")
+    public ResponseEntity<?> findId(@PathVariable String email,@PathVariable String username){
+        System.out.println("비번찾기 GET");
+        return ResponseEntity.ok(userMailService.findPw(email,username));
+    }
+    @PostMapping("/findPw")
+    public void findPw(@RequestBody String userInfo){
+        JSONParser jsonParse = new JSONParser();
+        try {
+            JSONObject jsonObject = (JSONObject) jsonParse.parse(userInfo);
+            String email = (String) jsonObject.get("email");
+            String username = (String) jsonObject.get("username");
+            MailDto dto = userMailService.passwordMail(email,username);
+            userMailService.mailSend(dto);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

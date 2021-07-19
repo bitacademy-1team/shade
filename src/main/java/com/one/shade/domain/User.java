@@ -18,8 +18,7 @@ import java.time.LocalDate;
 @Entity
 @Table(	name = "users",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
+                @UniqueConstraint(columnNames = "username")
         })
 public class User {
 
@@ -27,13 +26,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Size(max = 20)
     private String username;
     @NotBlank
     @Size(max = 50)
     @Email
     private String email;
-    @NotBlank
     @Size(max = 120)
     private String password;
 
@@ -47,18 +44,6 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private AuthProvider provider;
     private String providerId;
-
-    private String gender;
-
-    private String nickname;
-
-    private String sns_provider;
-
-    private String birth;
-
-    private String join_date;
-
-    private String leave_date;
 
 
     public User(String username, String email, String password) {

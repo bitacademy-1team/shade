@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 
@@ -61,6 +62,8 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .roles(ERole.ROLE_USER)
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
+                    .nickname(oAuth2UserInfo.getName())
+                    .joinDate(LocalDate.now())
                     .build();
             userRepository.save(user);
         } else {

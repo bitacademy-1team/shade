@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import AuthService from "../service/user/AuthService";
+import UserUtils from "../service/user/UserUtils";
 import { Button, Avatar, Tabs, Tab, Box, Typography, Toolbar, AppBar, CssBaseline, Drawer, Modal, Fade, Container, Grid, Backdrop, Card, TextField } from "@material-ui/core";
+import { ACCESS_TOKEN } from "../service/oauth2/OAuth";
 
 const drawerWidth = 150;
 
@@ -117,7 +118,7 @@ export default function Mypage() {
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
-  const currentUser = AuthService.getCurrentUser();
+  const currentUser = UserUtils.getCurrentUser();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -148,7 +149,7 @@ export default function Mypage() {
   };
 
   const logOut = () => {
-      AuthService.logout();
+    localStorage.removeItem(ACCESS_TOKEN);
   };
 
   return (

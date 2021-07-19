@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getUserBoard } from '../../service/user/UserUtils';
+import { getUserBoard } from '../service/user/UserUtils';
 
 const BoardUser = () => {
 

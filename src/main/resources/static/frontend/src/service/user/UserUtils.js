@@ -38,12 +38,14 @@ const login = (username, password) => {
         password,
     })
     .then((response) => {
+        // alert(JSON.stringify(response.data.accessToken))
         if(response.data.accessToken){
-            localStorage.setItem(ACCESS_TOKEN, JSON.stringify(response.data));
+            localStorage.setItem(ACCESS_TOKEN,response.data.accessToken);
         }
         return response.data;
     });
 }; 
+
 
 const join = (username, email, password, nickname, birthday, gender) => {
     return axios.post(API_BASE_URL + "/api/auth/join", {
@@ -70,6 +72,25 @@ const updateUser = (username, email, password, nickname) => {
         nickname
     })
 }
+
+const findId = (email) => {
+    return axios.get(API_BASE_URL + "/api/auth/findId/" + email,{
+        email,
+    })
+}
+const findPw = (username, email) => {
+    return axios.post(API_BASE_URL + "/api/auth/findPw",{
+        username,
+        email,
+    })
+}
+const findPwCheck = (username, email) => {
+    return axios.get(API_BASE_URL + "/api/auth/findPw/" + username + "/" + email,{
+        username,
+        email,
+    })
+}
+
 export const getPublicContent = () => {
     return axios.get(API_BASE_URL + "/api/user/all");
 };
@@ -95,4 +116,7 @@ export default {
     checkUsername,
     getUserBoard,
     updateUser,
+    findId,
+    findPw,
+    findPwCheck,
 }
