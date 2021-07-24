@@ -1,6 +1,5 @@
 package com.one.shade.vo;
 
-import com.one.shade.domain.Contents;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -15,6 +14,8 @@ public class ContentsListVO {
     private String title;
 
     private String poster;
+
+    private String check_like;
 
 
 }

@@ -13,7 +13,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-const JustWatch = require('justwatch-api');
+const JustWatch = require('justwatch-api').default;
 let api = "";
 let apiResult = [];
 let finalResult = [];

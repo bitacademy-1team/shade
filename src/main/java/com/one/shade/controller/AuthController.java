@@ -1,15 +1,15 @@
 package com.one.shade.controller;
 
 import com.one.shade.config.auth.PrincipalDetails;
-import com.one.shade.util.JWTUtil;
-import com.one.shade.exception.BadRequestException;
 import com.one.shade.domain.ERole;
 import com.one.shade.domain.User;
-import com.one.shade.payload.LoginRequest;
-import com.one.shade.payload.SignupRequest;
+import com.one.shade.exception.BadRequestException;
 import com.one.shade.payload.JwtResponse;
+import com.one.shade.payload.LoginRequest;
 import com.one.shade.payload.MessageResponse;
+import com.one.shade.payload.SignupRequest;
 import com.one.shade.repository.UserRepository;
+import com.one.shade.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +18,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @RestController

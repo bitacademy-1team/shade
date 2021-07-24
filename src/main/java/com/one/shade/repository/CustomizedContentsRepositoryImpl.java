@@ -18,14 +18,14 @@ public class CustomizedContentsRepositoryImpl implements CustomizedContentsRepos
         this.queryFactory = queryFactory;
     }
     @Override
-    public List<Contents> movieList(Pageable pageable, List<Long> platform_ids, Long genre_id) {
+    public List<Contents> movieList(Pageable pageable, List<Long> platform_ids, Long genre_id,String object_type) {
         return queryFactory
                 .selectFrom(QContents.contents)
                 .leftJoin(QPlatform.platform)
                 .on(QContents.contents.contents_id.eq(QPlatform.platform.contents_id))
                 .leftJoin(QGenre.genre)
                 .on(QContents.contents.contents_id.eq(QGenre.genre.contents_id))
-                .where(PredicateQuery.search(platform_ids,genre_id))
+                .where(QContents.contents.object_type.eq(object_type).and(PredicateQuery.search(platform_ids,genre_id)))
                 .groupBy(QContents.contents.contents_id)
                 .orderBy(QContents.contents.opendate.desc(),QContents.contents.title.desc())
                 .limit(pageable.getPageSize())

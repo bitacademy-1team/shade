@@ -27,12 +27,12 @@
 // }
 
 
-import React from "react";
+import { React, useState } from "react";
 import Slider from "react-slick";
-import { Container} from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import { Grid, Card, CardActionArea, Link, CardMedia } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
+import MovieRecommendListService from "../service/MovieRecommendListService";
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
     paddingTop: theme.spacing(8),
@@ -44,8 +44,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column"
   },
   media: {
-      height: 225,
-      width: "100%",
+    height: 225,
+    width: "100%",
   },
 }));
 
@@ -54,7 +54,7 @@ function SampleNextArrow(props) {
   return (
     <div
       className={className}
-      style={{background: "black" }}
+      style={{ background: "black" }}
       onClick={onClick}
     />
   );
@@ -65,7 +65,7 @@ function SamplePrevArrow(props) {
   return (
     <div
       className={className}
-      style={{background: "black"}}
+      style={{ background: "black" }}
       onClick={onClick}
     />
   );
@@ -73,6 +73,13 @@ function SamplePrevArrow(props) {
 
 export default function MovieRecommendComponent() {
   const classes = useStyles();
+  const {
+    list,
+    loading,
+    error
+  } = MovieRecommendListService()
+  let contents = useState();
+
   const settings = {
     dots: true,
     infinite: true,
@@ -114,97 +121,82 @@ export default function MovieRecommendComponent() {
       }
     ]
   };
-    return (
-      <div>
-        <Container className={classes.cardGrid} maxWidth="lg">
+
+  return (
+    <div>
+      <Container className={classes.cardGrid} maxWidth="lg">
+        {list.map((l) => {
+          contents = l.contents
+          return <div key={l.title}>
+            <h3>{l.title}</h3>
+            <Slider {...settings}>
+              {contents.map(k => (
+                <h3 key={k.contents_id}>{k.title}</h3>
+              ))}
+              <Grid item xs={6} sm={3} md={2}>
+                <Card className={classes.card} >
+                  <CardActionArea type="button">
+                    <Link to={'/moviedetail/'}>
+                      <CardMedia
+                        className={classes.media}
+                        title="contents_id"
+                        image={'https://images.justwatch.com'}
+                      >
+                      </CardMedia>
+                    </Link>
+                  </CardActionArea>
+                </Card>
+              </Grid>
+            </Slider>
+          </div>
+        })}
+
+
+        <br /><br /><br /><br /><br /><br />
         <div>
-        <h3>영화 추천</h3>
-        <Slider {...settings}>
-          <div>
-            <h3>1</h3>
-          </div>
-          <div>
-            <h3>2</h3>
-          </div>
-          <div>
-            <h3>3</h3>
-          </div>
-          <div>
-            <h3>4</h3>
-          </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
-          </div>
-          <div>
-            <h3>7</h3>
-          </div>
-          <div>
-            <h3>8</h3>
-          </div>
-          <Grid item xs={6} sm={3} md={2}>
-            <Card className={classes.card} >
-              <CardActionArea type="button">
-                <Link to={'/moviedetail/'}>
-                  <CardMedia 
-                    className={classes.media}
-                    title="contents_id"
-                    image={'https://images.justwatch.com'}
-                  >
-                  </CardMedia>
-                </Link>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        </Slider>
+          <h3>TV 추천</h3>
+          <Slider {...settings}>
+            <div>
+              <h3>1</h3>
+            </div>
+            <div>
+              <h3>2</h3>
+            </div>
+            <div>
+              <h3>3</h3>
+            </div>
+            <div>
+              <h3>4</h3>
+            </div>
+            <div>
+              <h3>5</h3>
+            </div>
+            <div>
+              <h3>6</h3>
+            </div>
+            <div>
+              <h3>7</h3>
+            </div>
+            <div>
+              <h3>8</h3>
+            </div>
+            <Grid item xs={6} sm={3} md={2}>
+              <Card className={classes.card} >
+                <CardActionArea type="button">
+                  <Link to={'/moviedetail/'}>
+                    <CardMedia
+                      className={classes.media}
+                      title="contents_id"
+                      image={'https://images.justwatch.com'}
+                    >
+                    </CardMedia>
+                  </Link>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          </Slider>
         </div>
-        <br/><br/><br/><br/><br/><br/>
-        <div>
-        <h3>TV 추천</h3>
-        <Slider {...settings}>
-          <div>
-            <h3>1</h3>
-          </div>
-          <div>
-            <h3>2</h3>
-          </div>
-          <div>
-            <h3>3</h3>
-          </div>
-          <div>
-            <h3>4</h3>
-          </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
-          </div>
-          <div>
-            <h3>7</h3>
-          </div>
-          <div>
-            <h3>8</h3>
-          </div>
-          <Grid item xs={6} sm={3} md={2}>
-            <Card className={classes.card} >
-              <CardActionArea type="button">
-                <Link to={'/moviedetail/'}>
-                  <CardMedia 
-                    className={classes.media}
-                    title="contents_id"
-                    image={'https://images.justwatch.com'}
-                  >
-                  </CardMedia>
-                </Link>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        </Slider>
-        </div>
-        </Container>
-      </div>
-    );
-  }
+      </Container>
+    </div>
+  );
+}

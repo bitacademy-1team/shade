@@ -1,0 +1,64 @@
+version : "3.2"
+services :
+    # db :
+    #     image : wlgud30/shade-db:1.0
+    #     container_name : shade-mysql
+    #     ports :
+    #         - "3307:3306"
+    #     environment :
+    #         MYSQL_ROOT_PASSWORD: "1234"
+    #     command :
+    #         - --sql_mode=
+    #         - --character-set-server=utf8mb4
+    #         - --collation-server=utf8mb4_unicode_ci
+    #     volumes :
+    #         - ./mysql-init-files/:/docker-entrypoint-initdb.d/
+    #         - ./mysql_data:/var/lib/mysql
+    #     networks :
+    #         - backend-network
+    
+    spring-boot :
+        # build:
+        #     context: .
+        #     dockerfile: Dockerfile
+        image: wlgud30/shade-spring-boot:1.1
+        ports:
+            - "8080:8080"
+        container_name: shade-spring-boot
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://shade.cbxhaf2v5wmc.ap-northeast-2.rds.amazonaws.com:3306/shade?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&characterEncoding=utf8
+            SPRING_DATASOURCE_USERNAME: root
+            SPRING_DATASOURCE_PASSWORD: shade1234
+        networks :
+            - backend-network
+
+    react :
+        image: wlgud30/shade-react:1.1
+        command: sh -c "npm install && npm start"
+        ports:
+            - 3000:3000
+        working_dir: /usr/src/app
+        volumes:
+            - ./src/main/resources/static/frontend:/usr/src/app
+            - "/usr/src/app/node_modules"
+        container_name: shade-react
+        networks:
+           - frontend-network
+
+    # django :
+    #     # build: 
+    #     #     context : /Users/wlgud30/anaconda3/envs/main
+    #     #     dockerfile: ./Dockerfile
+    #     image : wlgud30/shade-jango:1.0
+    #     ports:
+    #        - 8000:8000
+    #     container_name: shade-django
+    #     depends_on:
+    #        - db
+    #     networks :
+    #        - backend-network
+
+
+networks:
+    backend-network:
+    frontend-network:

@@ -6,7 +6,6 @@ import com.one.shade.vo.ContentMovieDetailVO;
 import com.one.shade.vo.ContentSummaryVO;
 import com.one.shade.vo.ContentsListVO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,34 +20,35 @@ public class ContentsService {
 
     private final ContentsRepository contentsRepository;
 
+//    @Transactional
+//    public List<ContentsListVO> listMovie(String date, Pageable pageable){
+//        //return contentsRepository.listMovie(date,pageable).stream().map(ContentsListVO::new).collect(Collectors.toList());
+//
+//        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
+//        Page<Contents> managers = contentsRepository.listMovie(date,pageable);
+//
+//        return managers.stream().map(
+//                contents -> new ContentsListVO(
+//                        contents.getContents_id(),
+//                        contents.getTitle(),
+//                        contents.getPoster()
+//                )).collect(Collectors.toList());
+//
+//    }
+
     @Transactional
-    public List<ContentsListVO> listMovie(String date, Pageable pageable){
+    public List<ContentsListVO> movieList(Pageable pageable,List<Long> platform_ids, Long genre_id,String object_type){
         //return contentsRepository.listMovie(date,pageable).stream().map(ContentsListVO::new).collect(Collectors.toList());
 
         pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-        Page<Contents> managers = contentsRepository.listMovie(date,pageable);
+        List<Contents> managers = contentsRepository.movieList(pageable,platform_ids,genre_id,object_type);
 
         return managers.stream().map(
                 contents -> new ContentsListVO(
                         contents.getContents_id(),
                         contents.getTitle(),
-                        contents.getPoster()
-                )).collect(Collectors.toList());
-
-    }
-
-    @Transactional
-    public List<ContentsListVO> movieList(Pageable pageable,List<Long> platform_ids, Long genre_id){
-        //return contentsRepository.listMovie(date,pageable).stream().map(ContentsListVO::new).collect(Collectors.toList());
-
-        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize());
-        List<Contents> managers = contentsRepository.movieList(pageable,platform_ids,genre_id);
-
-        return managers.stream().map(
-                contents -> new ContentsListVO(
-                        contents.getContents_id(),
-                        contents.getTitle(),
-                        contents.getPoster()
+                        contents.getPoster(),
+                        null
                 )).collect(Collectors.toList());
     }
 

@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 public class ContentsController {
@@ -82,10 +81,12 @@ public class ContentsController {
     @GetMapping("/movieList")
     public List<ContentsListVO> movieList(@PageableDefault(page = 0) Pageable pageRequest){
         List<Long> platform_ids = new ArrayList<>();
-        platform_ids = null;
-        Long genre_id = null;
-        System.out.println(pageRequest.getPageNumber());
-        return contentsService.movieList(pageRequest,platform_ids,genre_id);
+//        platform_ids = null;
+        platform_ids.add(8l);
+        Long genre_id = 3l;
+        String object_type = "movie";
+        System.out.println(pageRequest);
+        return contentsService.movieList(pageRequest,platform_ids,genre_id,object_type);
     }
 
     @GetMapping("/movieDetail")

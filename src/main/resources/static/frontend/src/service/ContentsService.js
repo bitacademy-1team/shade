@@ -21,6 +21,7 @@ export default function ExContentsService(query, pageNumber) {
             params: {page: pageNumber*20,size:20},
             cancelToken: new axios.CancelToken(c => cancel = c)
         }).then(res => {
+            console.log(res)
             setList(prevList => {
                 return [...new Set([...prevList, ...res.data.map(l => l)])]
             }) 

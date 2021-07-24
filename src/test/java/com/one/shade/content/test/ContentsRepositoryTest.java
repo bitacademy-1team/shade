@@ -7,10 +7,15 @@ import com.one.shade.dto.ContentsUserDto;
 import com.one.shade.repository.ContentsRepository;
 import com.one.shade.repository.ContentsUserRepository;
 import com.one.shade.repository.UserRepository;
+import com.one.shade.service.ContentsService;
+import com.one.shade.util.PredicateQuery;
+import com.one.shade.vo.ContentSummaryVO;
 import com.one.shade.vo.GenreRatingVO;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jep.Jep;
 import jep.JepException;
@@ -33,9 +38,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -49,6 +58,8 @@ public class ContentsRepositoryTest{
     private ContentsUserRepository contentsUserRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ContentsService contentsService;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
@@ -355,8 +366,8 @@ public class ContentsRepositoryTest{
 
     @Test
     public void myRecommendTest(){
-        Long id = 104l;
-        String str = "186121,2193,10236,49192,49637,60409,79031,89663,91953,98784,104510,104892,142645,183656,148548,164877";
+        Long id = 103l;
+        String str = "186121,2193,10236,49192,49637,60409,79031,89663,91953,98784,104510";
         String [] strarr = str.split(",");
 
         for (int i = 0 ; i< strarr.length;i++){
@@ -382,5 +393,71 @@ public class ContentsRepositoryTest{
                     .build();
             contentsUserRepository.save(contentsUser1);
         }
+    }
+
+    @Test
+    @Transactional
+    public void keyTest(){
+        List<ContentSummaryVO> list = contentsService.listSummary();
+        List<Map> summary = new ArrayList<>();
+        String pathPython = "C:\\Users\\wlgud30\\PycharmProjects\\pythonProject\\JavaCall.py";
+        String [] cmd = new String[3];
+        String str = "";
+        String keyword="";
+        int i = 0;
+        for(ContentSummaryVO vo : list){
+            keyword = "\""+vo.getSummary().replaceAll("\"","")+"\"";
+            System.out.println(keyword);
+            ProcessBuilder pb = new ProcessBuilder()
+                    .command("python","-u",pathPython, keyword);
+            Process p = null;
+            try {
+                p = pb.start();
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(p.getInputStream()));
+                StringBuilder buffer = new StringBuilder();
+                String line = null;
+                while ((line = in.readLine()) != null){
+                    buffer.append(line);
+                }
+                int exitCode = p.waitFor();
+                //System.out.println(buffer);
+                System.out.println("keyword : " + buffer.toString());
+                str = buffer.toString().replace("'","").replace("[","").replace("]","").replaceAll(" ","");
+                System.out.println("keyword : " + str);
+                contentsService.updateKeyword(str,vo.getContents_id());
+                in.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    @Test
+    @Transactional
+    public void queryTest(){
+        List<Long> platform_ids = new ArrayList<>();
+        platform_ids.add(3l);
+        QContentsUser cu = QContentsUser.contentsUser;
+        QContents c = QContents.contents;
+        Long genre_id = 3l;
+
+
+         queryFactory.select()
+                .from((EntityPath<?>) JPAExpressions
+                        .selectFrom(QContents.contents)
+                        .leftJoin(QPlatform.platform)
+                        .on(QContents.contents.contents_id.eq(QPlatform.platform.contents_id))
+                        .leftJoin(QGenre.genre)
+                        .on(QContents.contents.contents_id.eq(QGenre.genre.contents_id))
+                        .where(QContents.contents.object_type.eq("movie").and(PredicateQuery.search(platform_ids,genre_id)))
+                        .groupBy(QContents.contents.contents_id)
+                        .orderBy(QContents.contents.opendate.desc(),QContents.contents.title.desc())
+                        .limit(20))
+                .leftJoin(QContentsUser.contentsUser)
+                .on()
+         ;
     }
 }
