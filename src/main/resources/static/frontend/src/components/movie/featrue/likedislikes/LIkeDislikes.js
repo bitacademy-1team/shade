@@ -4,7 +4,7 @@ import { IconButton } from "@material-ui/core";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 
-export default function LikeDislikes(props) {
+export default function LikeDislikes({name,contents_id},props) {
   const [Likes, setLikes] = useState(0)
   const [Dislikes, setDislikes] = useState(0)
   const [LikeAction, setLikeAction] = useState(null)
@@ -13,41 +13,41 @@ export default function LikeDislikes(props) {
   let variable = {};
 
   if (props.contents_id) {
-    variable = { contents_id: props.contents_id, user_id: props.user_id };
+    variable = { contents_id:contents_id, user_id: props.user_id };
   }
 
   useEffect(() => {
-    Axios.post('/api/like/getLikes', variable).then((response) => {
-      if (response.data.success) {
-        //얼마나 많은 좋아요를 받았는지
-        setLikes(response.data.likes.length);
-        //내가 좋아요를 이미 눌렀는지
-        response.data.likes.map((like) => {
-          if (like.user_id === props.user_id) {
-            //pros.userId는 로그인한 사용자의 Id이기때문
-            setLikeAction('liked');
-          }
-        });
-      } else {
-        alert('Like에 대한 정보를 가져오지 못했습니다.');
-      }
-    });
+    // Axios.post('/api/like/getLikes', variable).then((response) => {
+    //   if (response.data.success) {
+    //     //얼마나 많은 좋아요를 받았는지
+    //     setLikes(response.data.likes.length);
+    //     //내가 좋아요를 이미 눌렀는지
+    //     response.data.likes.map((like) => {
+    //       if (like.user_id === props.user_id) {
+    //         //pros.userId는 로그인한 사용자의 Id이기때문
+    //         setLikeAction('liked');
+    //       }
+    //     });
+    //   } else {
+    //     alert('Like에 대한 정보를 가져오지 못했습니다.');
+    //   }
+    // });
 
-    Axios.post('/api/like/getDislikes', variable).then((response) => {
-      if (response.data.success) {
-        //얼마나 많은 싫어요를 받았는지
-        setDislikes(response.data.dislikes.length);
-        //내가 싫어요를 이미 눌렀는지
-        response.data.dislikes.map((dislike) => {
-          if (dislike.user_id === props.user_id) {
-            //pros.userId는 로그인한 사용자의 Id이기때문
-            setDisLikeAction('disliked');
-          }
-        });
-      } else {
-        alert('DisLike에 대한 정보를 가져오지 못했습니다.');
-      }
-    });
+    // Axios.post('/api/like/getDislikes', variable).then((response) => {
+    //   if (response.data.success) {
+    //     //얼마나 많은 싫어요를 받았는지
+    //     setDislikes(response.data.dislikes.length);
+    //     //내가 싫어요를 이미 눌렀는지
+    //     response.data.dislikes.map((dislike) => {
+    //       if (dislike.user_id === props.user_id) {
+    //         //pros.userId는 로그인한 사용자의 Id이기때문
+    //         setDisLikeAction('disliked');
+    //       }
+    //     });
+    //   } else {
+    //     alert('DisLike에 대한 정보를 가져오지 못했습니다.');
+    //   }
+    // });
   }, []);
 
   const onLike = () => {
@@ -64,6 +64,7 @@ export default function LikeDislikes(props) {
             console.log("Dislike");
           }
         } else {
+          alert("why : "+variable)
           alert('Like를 올리지 못했습니다.');
         }
       });
@@ -73,6 +74,7 @@ export default function LikeDislikes(props) {
           setLikes(Likes === '');
           setLikeAction('');
         } else {
+          alert("why : "+contents_id)
           alert('Like를 내리지 못했습니다.');
         }
       });

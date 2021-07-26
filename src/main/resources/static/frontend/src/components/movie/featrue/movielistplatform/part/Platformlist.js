@@ -7,11 +7,11 @@ import Naver from "../../../../../img/naver.jpeg";
 import Wavve from "../../../../../img/wavve.jpeg";
 import Netflix from "../../../../../img/netflix.jpeg";
 import Watcha from "../../../../../img/watcha.jpeg";
-import Googleoff from "../../../../../img/googleoff.jpeg";
-import Naveroff from "../../../../../img/naveroff.jpeg";
-import Wavveoff from "../../../../../img/wavveoff.jpeg";
-import Netflixoff from "../../../../../img/netflixoff.jpeg";
-import Watchaoff from "../../../../../img/watchaoff.jpeg";
+import Googleoff from "../../../../../img/google.jpeg";
+import Naveroff from "../../../../../img/naver.jpeg";
+import Wavveoff from "../../../../../img/wavve.jpeg";
+import Netflixoff from "../../../../../img/netflix.jpeg";
+import Watchaoff from "../../../../../img/watcha.jpeg";
 
 const useStyles = makeStyles((theme) => ({
     title: {

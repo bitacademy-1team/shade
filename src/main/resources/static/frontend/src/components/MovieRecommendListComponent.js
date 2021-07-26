@@ -127,6 +127,7 @@ export default function MovieRecommendComponent() {
       <Container className={classes.cardGrid} maxWidth="lg">
         {list.map((l) => {
           contents = l.contents
+
           return <div key={l.title}>
             <h3>{l.title}</h3>
             <Slider {...settings}>
@@ -148,8 +149,10 @@ export default function MovieRecommendComponent() {
                 </Card>
               </Grid>
             </Slider>
+            
           </div>
-        })}
+        }
+        )}
 
 
         <br /><br /><br /><br /><br /><br />
