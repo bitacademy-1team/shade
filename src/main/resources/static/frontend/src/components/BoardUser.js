@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import UserService from "../service/user/UserService";
+import React, { useEffect, useState } from 'react';
+import { getUserBoard } from '../service/user/UserUtils';
 
 const BoardUser = () => {
 
     const [content, setContent] = useState("");
-
+  
     useEffect(() => {
-      UserService.getUserBoard()
+        getUserBoard()
       .then((res) => {
           setContent(res.data);
         },
@@ -17,12 +17,12 @@ const BoardUser = () => {
               error.res.data.message) ||
             error.message ||
             error.toString();
-
+  
           setContent(_content);
         }
       );
     }, []);
-
+  
     return (
       <div className="container">
         <header className="jumbotron">

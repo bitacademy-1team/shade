@@ -16,6 +16,7 @@ import FrequentlyAskedQuestions from "./components/FAQ";
 import FindId from "./components/FindId";
 import FindPw from "./components/FindPw";
 import Headerbox from "./components/HeaderBox";
+import OAuth2RedirectHandler from './service/oauth2/OAuth2RedirectHandler'
 //import Home from './components/user/Home';
 //import Profile from './components/user/Profile';
 import Contents from './components/contents/contents'
@@ -48,7 +49,7 @@ function App() {
               {/* <Route exact path="/test" component={Headerbox}/> */}
               <Route exact path="/contents" component={Contents} />
               <Route exact path="/api" component={api} />
-
+              <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
             </Switch>
           </Grid>
         </Grid>

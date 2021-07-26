@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
-import AuthService from "../service/user/AuthService";
+import UserUtils from '../service/user/UserUtils'
 import { AppBar, Button, CssBaseline, Toolbar, Typography, Link, InputBase, IconButton, Menu, MenuItem, Paper, Popper, Grow, MenuList, ClickAwayListener } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import styled from "styled-components";
+import { ACCESS_TOKEN } from "../service/oauth2/OAuth";
 
 const HeaderArea = styled.div`
     position: relative;
@@ -139,21 +140,31 @@ export default function Pricing() {
 
   const throttleScroll = throttle(handleScroll, 50);
 
+    
+  const loadCurrentlyLoggedInUser = () => {
+    
+    UserUtils.getCurrentUser()
+    .then((res) => {
+        setCurrentUser(res)
+    })  
+  } 
+
   useEffect(() => {
+      loadCurrentlyLoggedInUser();
       documentRef.current.addEventListener('scroll', throttleScroll);
       return () => documentRef.current.removeEventListener('scroll', throttleScroll);
   }, [pageY]);
 
 
-  useEffect(() => {
-    const user = AuthService.getCurrentUser();
+  // useEffect(() => {
+  //   const user = UserUtils.getCurrentUser();
 
-    if(user) {
-      setCurrentUser(user);
-      setShowAdminBoard(user.roles.includes("ROLE-ADMIN"));
-    }
+  //   if(user) {
+  //     setCurrentUser(user);
+  //     setShowAdminBoard(user.roles.includes("ROLE-ADMIN"));
+  //   }
 
-  },[]);
+  // },[]);
 
   // 목록메뉴
   // const handleToggle = () => {
@@ -193,7 +204,7 @@ export default function Pricing() {
   };
 
   const logOut = () => {
-    AuthService.logout();
+    localStorage.removeItem(ACCESS_TOKEN);
   };
 
   return (
@@ -301,7 +312,7 @@ export default function Pricing() {
                   onClick={handleMenu}
                   color="inherit"
                 >
-                  {currentUser.username}
+                  {currentUser.nickname}
                 </IconButton>
                 <Menu
                   className={classes.menu}

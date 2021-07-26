@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -17,8 +18,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(	name = "users",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
+                @UniqueConstraint(columnNames = "username")
         })
 public class User {
 
@@ -26,30 +26,24 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
-    @Size(max = 20)
     private String username;
     @NotBlank
     @Size(max = 50)
     @Email
     private String email;
-    @NotBlank
     @Size(max = 120)
     private String password;
 
-    @Enumerated(value = EnumType.STRING)
-    private com.one.shade.domain.ERole roles;
-
-    private String gender;
-
     private String nickname;
+    private String gender;
+    private String birthday;
+    private LocalDate joinDate;
 
-    private String sns_provider;
-
-    private String birth;
-
-    private String join_date;
-
-    private String leave_date;
+    @Enumerated(value = EnumType.STRING)
+    private ERole roles;
+    @Enumerated(value = EnumType.STRING)
+    private AuthProvider provider;
+    private String providerId;
 
 
     public User(String username, String email, String password) {

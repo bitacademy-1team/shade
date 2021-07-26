@@ -1,4 +1,4 @@
-package com.one.shade.config.auth;
+package com.one.shade.security.auth;
 
 import com.one.shade.domain.User;
 import lombok.Data;
@@ -15,18 +15,15 @@ import java.util.Map;
 public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;
-    private Long id;
     private Map<String, Object> attributes;
-
 
     // 일반 로그인
     public PrincipalDetails(User user) {
         this.user = user;
     }
     // Oauth2 로그인
-    public PrincipalDetails(User user, Long id,Map<String, Object> attributes) {
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
         this.user = user;
-        this.id = id;
         this.attributes = attributes;
     }
 

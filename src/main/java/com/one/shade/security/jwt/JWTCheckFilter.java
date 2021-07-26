@@ -1,7 +1,7 @@
-package com.one.shade.config.jwt;
+package com.one.shade.security.jwt;
 
-import com.one.shade.config.auth.PrincipalDetails;
-import com.one.shade.config.auth.PrincipalDetailsService;
+import com.one.shade.security.auth.PrincipalDetails;
+import com.one.shade.security.auth.PrincipalDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

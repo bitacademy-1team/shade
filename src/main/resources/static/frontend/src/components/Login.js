@@ -2,9 +2,14 @@ import React, { useRef, useState } from "react";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import { makeStyles } from "@material-ui/core/styles";
 import { Avatar, Button, CssBaseline, TextField, Link, Grid, Typography, Container } from "@material-ui/core";
-import AuthService from "../service/user/AuthService";
+import UserUtils from "../service/user/UserUtils";
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
+import { ACCESS_TOKEN, FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL, KAKAO_AUTH_URL, NAVER_AUTH_URL } from "../service/oauth2/OAuth";
+import googleLogo from '../img/google-logo.png';
+import fbLogo from '../img/fb-logo.png';
+import naverLogo  from '../img/naver-logo.png';
+import kakaoLogo  from '../img/kakao-logo.png';
 // import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 const useStyles = makeStyles((theme) => ({
@@ -87,9 +92,9 @@ export default function SignIn(props) {
     form.current.validateAll();
 
     if (checkBtn.current.context._errors.length === 0) {
-      AuthService.login(username, password)
-        .then(() => {
-          props.history.push("/recommend");
+      UserUtils.login(username, password)
+        .then((res) => {
+          props.history.push("/");
           window.location.reload();
         },
           (error) => {
@@ -180,31 +185,18 @@ export default function SignIn(props) {
             </Grid>
           </Grid>
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
-          <Grid>
-            <ul className={classes.ul}>
-              <li className={classes.li}>
-                <button className='btn-social-login'>
-                  <i className="xi-3x xi-google"></i>
-                </button>
-              </li>
-                <li className={classes.li}>
-                  <button className='btn-social-login'>
-                    <i className="xi-3x xi-facebook"></i>
-                  </button>
-                </li>
-                <li className={classes.li}>
-                  <button className='btn-social-login'>
-                    <i className="xi-3x xi-naver"></i>
-                  </button>
-                </li>
-                <li className={classes.li}>
-                  <button className='btn-social-login'>
-                    <i className="xi-3x xi-kakaotalk text-dark" ></i>
-                  </button>
-                </li>
-              </ul>
-            </Grid>
+         
         </Form>
+        <div className="social-login">
+                <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
+                    <img src={googleLogo} alt="Google" /> 구글 로그인</a>
+                <a className="btn btn-block social-btn google" href={FACEBOOK_AUTH_URL}>
+                    <img src={fbLogo} alt="Facebook" /> 페이스북 로그인</a>
+                <a className="btn btn-block social-btn google" href={NAVER_AUTH_URL}>
+                    <img src={naverLogo} alt="Naver" /> 네이버 로그인</a>
+                <a className="btn btn-block social-btn google" href={KAKAO_AUTH_URL}>
+                    <img src={kakaoLogo} alt="Kakao" /> 카카오톡 로그인</a>
+            </div>
       </div>
     </Container>
   );

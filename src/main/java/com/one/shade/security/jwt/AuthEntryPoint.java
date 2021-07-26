@@ -1,4 +1,4 @@
-package com.one.shade.config.jwt;
+package com.one.shade.security.jwt;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
