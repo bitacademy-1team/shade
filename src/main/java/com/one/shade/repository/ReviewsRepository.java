@@ -1,6 +1,6 @@
-package com.example.demo.repository;
+package com.one.shade.repository;
 
-import com.example.demo.entity.Reviews;
+import com.one.shade.domain.Reviews;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReviewsRepository extends JpaRepository<Reviews,Long> {

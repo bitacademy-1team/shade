@@ -1,7 +1,7 @@
-package com.example.demo.service;
+package com.one.shade.service;
 
-import com.example.demo.entity.Reviews;
-import com.example.demo.repository.ReviewsRepository;
+import com.one.shade.domain.Reviews;
+import com.one.shade.repository.ReviewsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

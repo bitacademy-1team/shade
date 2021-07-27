@@ -1,8 +1,8 @@
-package com.example.demo.controller;
+package com.one.shade.controller;
 
 
-import com.example.demo.entity.Reviews;
-import com.example.demo.service.ReviewsService;
+import com.one.shade.domain.Reviews;
+import com.one.shade.service.ReviewsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
