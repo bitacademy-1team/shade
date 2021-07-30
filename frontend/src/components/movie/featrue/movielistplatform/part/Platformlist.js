@@ -2,20 +2,23 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Button } from "@material-ui/core";
 
-import Google from "../../../../../img/google.jpeg";
-import Naver from "../../../../../img/naver.jpeg";
-import Wavve from "../../../../../img/wavve.jpeg";
-import Netflix from "../../../../../img/netflix.jpeg";
-import Watcha from "../../../../../img/watcha.jpeg";
-import Googleoff from "../../../../../img/google.jpeg";
-import Naveroff from "../../../../../img/naver.jpeg";
-import Wavveoff from "../../../../../img/wavve.jpeg";
-import Netflixoff from "../../../../../img/netflix.jpeg";
-import Watchaoff from "../../../../../img/watcha.jpeg";
+import Google from "../../../../../img/platform/on/google.jpeg";
+import Naver from "../../../../../img/platform/on/naver.jpeg";
+import Wavve from "../../../../../img/platform/on/wavve.jpeg";
+import Netflix from "../../../../../img/platform/on/netflix.jpeg";
+import Watcha from "../../../../../img/platform/on/watcha.jpeg";
+
+import Googleoff from "../../../../../img/platform/off/googleoff.jpeg";
+import Naveroff from "../../../../../img/platform/off/naveroff.jpeg";
+import Wavveoff from "../../../../../img/platform/off/wavveoff.jpeg";
+import Netflixoff from "../../../../../img/platform/off/netflixoff.jpeg";
+import Watchaoff from "../../../../../img/platform/off/watchaoff.jpeg";
 
 const useStyles = makeStyles((theme) => ({
     title: {
       padding: theme.spacing(1),
+      boxShadow: theme.shadows[5], 
+      borderRadius: "30px" 
     },
     li: {
       float: "left",
@@ -25,8 +28,10 @@ const useStyles = makeStyles((theme) => ({
     img: {
       width: 30,
       [theme.breakpoints.up('sm')]: {
-          width: 50,
+          width: 40,
       },
+      borderRadius: "30px" 
+
     },
   }));
 
@@ -39,7 +44,7 @@ export default function Platformlist() {
     const [wav, setWavve] = useState(1);
 
     const Click1 = () => {
-        if (net != 1) {
+        if (net !== 1) {
             setNetflix(net + 1);
             console.log("on Netflix");
         } else {
@@ -47,9 +52,9 @@ export default function Platformlist() {
             console.log("off Netflix");
         };
     }
-
+    
     const Click2 = () => {
-        if (wat != 1) {
+        if (wat !== 1) {
             setWatcha(wat + 1);
             console.log("on Watcha");
         } else {
@@ -59,7 +64,7 @@ export default function Platformlist() {
     }
 
     const Click3 = () => {
-        if (goo != 1) {
+        if (goo !== 1) {
             setGoogle(goo + 1);
             console.log("on Google");
         } else {
@@ -69,7 +74,7 @@ export default function Platformlist() {
     }
 
     const Click4 = () => {
-        if (nav != 1) {
+        if (nav !== 1) {
             setNaver(nav + 1);
             console.log("on Naver");
         } else {
@@ -79,7 +84,7 @@ export default function Platformlist() {
     }
 
     const Click5 = () => {
-        if (wav != 1) {
+        if (wav !== 1) {
             setWavve(wav + 1);
             console.log("on Wavve");
         } else {
@@ -89,7 +94,7 @@ export default function Platformlist() {
     }
 
     useEffect(() => {
-        if (net + wat + goo + nav + wav == 0) {
+        if (net + wat + goo + nav + wav === 0) {
             console.log("초기화");
             setNetflix(net + 1);
             setWatcha(wat + 1);
@@ -100,10 +105,10 @@ export default function Platformlist() {
     }, [net, wat, goo, nav, wav]);
 
     return (
-        <Grid className={classes.title} >
-        <ul>
+        <Grid className={classes.title}>
+        <ul flexWrap="noWrap">
             <li className={classes.li}>
-                <Button onClick={Click1}>
+                <Button onClick={Click1} >
                     {net ? (
                         <img className={classes.img} src={Netflix} alt="netflix" />
                     ) : (

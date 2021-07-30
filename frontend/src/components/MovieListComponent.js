@@ -1,35 +1,26 @@
 import React, { useRef, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import {
-  Container, Card, Grid, CardMedia, CardActionArea, AppBar, Toolbar, Typography, CssBaseline, useScrollTrigger, Fab, Zoom,
-  Button, Modal, Backdrop, Fade,
-  Box, Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Paper, TextField, InputAdornment,
-  List, ListItem, ListItemText, IconButton, Menu, MenuItem
-} from "@material-ui/core";
-import ContentsService from "../service/ContentsService";
-import MovieDetailService from "../service/MovieDetailService";
-import MovieDetailComponent from "./MovieDetailComponent";
 import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
+import { Container, Card, Grid, CardMedia, CardActionArea, 
+  CssBaseline, useScrollTrigger, Fab, Zoom, Toolbar, 
+  Button, Typography, Modal, Backdrop, Fade, 
+  Box, Table, TableBody, TableCell, TableContainer, 
+  TableHead, TableRow, Paper, TextField, InputAdornment, 
+  List, ListItem, ListItemText, IconButton, Menu, MenuItem} from "@material-ui/core";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import ThumbUpIcon from '@material-ui/icons/ThumbUp';
-import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { grey } from "@material-ui/core/colors"
 
+import ContentsService from "../service/contents/ContentsService";
 import MovielistPlatform from "./movie/featrue/movielistplatform/MovielistPlatform"
-import LikeDislikes from "./movie/featrue/likedislikes/LIkeDislikes";
+import MovieDetailService from "../service/movie/MovieDetailService";
+import LikeDislikes from "./movie/featrue/likedislikes/LikeDislikes";
 
-import Google from "../img/google.jpeg";
-import Naver from "../img/naver.jpeg";
-import Wavve from "../img/wavve.jpeg";
-import Netflix from "../img/netflix.jpeg";
-import Watcha from "../img/watcha.jpeg";
-// import Google from "../img/google";
-// import Naver from "../img/naver";
-// import Netflix from "../img/netflix";
-// import Watcha from "../img/watcha";
-// import Wavve from "../img/wavve";
+import Google from "../img/platform/on/google.jpeg";
+import Naver from "../img/platform/on/naver.jpeg";
+import Wavve from "../img/platform/on/wavve.jpeg";
+import Netflix from "../img/platform/on/netflix.jpeg";
+import Watcha from "../img/platform/on/watcha.jpeg";
 
 const useStyles = makeStyles((theme) => ({
   cardGrid: {
@@ -66,14 +57,17 @@ export default function ContentList(props) {
 
   const useStyles = makeStyles((theme) => ({
     //  리스트 페이지
+    page: {
+      backgroundColor: grey[900],
+      paddingTop: 0
+    },
     cardGrid: {
       paddingBottom: theme.spacing(8),
     },
     card: {
-      height: "100%",
-      display: "flex",
       flexDirection: "column",
-      backgroundColor: "white",
+      backgroundColor: grey[900],
+      boxShadow: theme.shadows[5], 
     },
     cardMedia: {
       paddingTop: "56.25%" // 16:9
@@ -90,8 +84,8 @@ export default function ContentList(props) {
       bottom: theme.spacing(2),
       right: theme.spacing(2)
     },
-
-
+  
+  
     //  디테일 페이지
     modal: {
       display: 'block',
@@ -99,28 +93,31 @@ export default function ContentList(props) {
       justifyContent: 'center',
       disableScrollLock: 'true',
       top: '10%',
+      marginTop: 10,
       left: '10%',
       overflow: 'scroll',
       position: 'absolute',
     },
     paper: {
       backgroundColor: theme.palette.background.paper,
-      boxShadow: theme.shadows[15],
+      boxShadow: theme.shadows[20], 
       padding: theme.spacing(2),
       width: 'auto',
       height: 'auto',
+      backgroundColor: grey[900],
+      color: grey[100]
     },
     video: {
-      overflow: 'hidden',
-      paddingBottom: '56.25%',
-      position: 'relative',
+      overflow:'hidden', 
+      paddingBottom:'56.25%',
+      position:'relative', 
       height: 0,
     },
-    iframe: {
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
+    iframe: { 
+      top:0, 
+      left:0, 
+      width:'100%', 
+      height:'100%', 
       position: 'absolute',
     },
     detail: {
@@ -135,12 +132,14 @@ export default function ContentList(props) {
     },
     table: {
       minWidth: 320,
+      backgroundColor: grey[900],
+      color: grey[100]
     },
     caption: {
       float: 'left',
     },
     platformimg: {
-      width: "20%",
+      width: 40,
     },
   }));
 
@@ -254,7 +253,6 @@ export default function ContentList(props) {
             {list.map((l, index) => {
               if (list.length === index + 1) {
                 return <div ref={lastPageElementRef} key={l.contents_id}>
-                  <Link to={'/moviedetail/' + l.contents_id}><img src={'https://images.justwatch.com' + l.poster} alt="moviePoster" /></Link>
 
                   {/* -- 디테일 페이지 시작 -- */}
                   <Modal

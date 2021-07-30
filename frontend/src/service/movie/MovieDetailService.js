@@ -1,5 +1,5 @@
 import axios from 'axios'; 
-import { API_BASE_URL, ACCESS_TOKEN } from '../service/oauth2/OAuth';
+import { API_BASE_URL, ACCESS_TOKEN } from '../oauth2/OAuth';
 
 class MovieDetailService {
 

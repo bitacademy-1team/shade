@@ -1,11 +1,27 @@
 import React, { useState } from "react";
 import { IconButton } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { API_BASE_URL, ACCESS_TOKEN } from '../../../../service/oauth2/OAuth';
 import axios from "axios";
+import { grey } from "@material-ui/core/colors"
+
+const useStyles = makeStyles((theme) => ({
+  likebox: {
+    display: "flex",
+    justifyContent: "space-around",
+  },
+  page: {
+    backgroundColor: grey[900]
+  },
+  like: {
+    color: grey[500]
+  }
+}))
 
 export default function LikeDislikes({ check_like, contents_id }) {
+  const classes = useStyles();
   const [Color,setColor] = useState(check_like);
   let url
   let token
@@ -31,13 +47,14 @@ export default function LikeDislikes({ check_like, contents_id }) {
   };
 
   return (
-    <div>
+    <div className={classes.page}>
+      <div className={classes.likebox}>
       <span key="comment-basic-like">
         <IconButton title="Like">
           {Color === 'like' ? (
             <ThumbUpIcon color="primary" onClick={() => onLike("cancel")} />
           ) : (
-            <ThumbUpIcon onClick={() => onLike("like")} />
+            <ThumbUpIcon className={classes.like} onClick={() => onLike("like")} />
           )}
         </IconButton>
       </span>
@@ -47,10 +64,11 @@ export default function LikeDislikes({ check_like, contents_id }) {
           {Color === 'unlike' ? (
             <ThumbDownIcon color="secondary"  onClick={() => onLike("cancel")}/>
           ) : (
-            <ThumbDownIcon onClick={() => onLike("unlike")}/>
+            <ThumbDownIcon className={classes.like} onClick={() => onLike("unlike")}/>
           )}
         </IconButton>
       </span>
+      </div>
     </div>
   );
 }
