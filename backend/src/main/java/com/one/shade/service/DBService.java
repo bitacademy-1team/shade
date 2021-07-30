@@ -179,7 +179,7 @@ public class DBService {
 
                         Episode episode1 = Episode.builder()
                                 .episode_id((Long) episodeObj.get("id"))
-                                .season_id((Long) obj.get("season_id"))
+                                .seasonId((Long) obj.get("season_id"))
                                 .epi_times((Long) episodeObj.get("runtime"))
                                 .epi_title((String) episodeObj.get("title"))
                                 .epi_num((Long) episodeObj.get("episode_number"))
@@ -199,7 +199,7 @@ public class DBService {
                                         .url((String) urlObj.get("standard_web"))
                                         .presentation_type((String) platforms.get("presentation_type"))
                                         .object_type("show")
-                                        .episode_id((Long) episodeObj.get("id"))
+                                        .episodeId((Long) episodeObj.get("id"))
                                         .build();
 
                                 platformList.add(platform);

@@ -19,6 +19,8 @@ public class ContentMovieDetailVO extends Contents{
 
     private String video;
 
+    private String poster;
+
     private String summary;
 
     private String genre_names;
@@ -50,5 +52,7 @@ public class ContentMovieDetailVO extends Contents{
     private String urls;
 
     private String presentation_types;
+
+    private String check_like;
 
 }

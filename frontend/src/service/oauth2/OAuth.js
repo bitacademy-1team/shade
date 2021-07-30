@@ -1,5 +1,8 @@
 
-export const API_BASE_URL = 'http://localhost:8080';
+// export const API_BASE_URL = 'http://52.79.189.13:8080/api';
+export const API_BASE_URL = 'http://localhost:8080/api';
+// export const API_BASE_URL_ = "http://52.79.189.13:8000/api_"; 
+export const API_BASE_URL_ = "http://localhost:80npm00/api_"; 
 export const ACCESS_TOKEN = 'accessToken';
 export const OAUTH2_REDIRECT_URI = 'http://localhost:3000/oauth2/redirect';
 

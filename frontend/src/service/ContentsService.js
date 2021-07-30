@@ -22,7 +22,7 @@ export default function ExContentsService(query, pageNumber) {
         }
         axios({
             method: 'GET',
-            url: 'http://localhost:8080/movieList',
+            url: API_BASE_URL+'/movieList',
             params: {page: pageNumber*20,size:20},
             headers: {
                 'Authorization': 'Bearer '+token,

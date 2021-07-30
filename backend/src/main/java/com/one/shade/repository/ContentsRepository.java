@@ -12,7 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ContentsRepository extends JpaRepository<Contents,Long>, CustomizedContentsRepository, QuerydslPredicateExecutor<Contents> {
+public interface ContentsRepository extends JpaRepository<Contents,Long>, CustomizedRepository, QuerydslPredicateExecutor<Contents> {
 
     @Query("SELECT c.poster,c.contents_id FROM Contents c ORDER BY c.opendate desc,c.title")
     Page<Contents> listMovie(@Param("date") String date, Pageable pageable);
@@ -31,8 +31,12 @@ public interface ContentsRepository extends JpaRepository<Contents,Long>, Custom
     void updateKeyword(String keyword, Long id);
 
     @Query(name="ContentMovieDetailVO", nativeQuery = true)
-    ContentMovieDetailVO movieDetail(@Param("contents_id") Long contents_id);
+    ContentMovieDetailVO movieDetail(@Param("contents_id") Long contents_id,@Param("id") Long id);
 
-    List<Contents> findTop12ByTitleContains(String title);
+    List<Contents> findTop5ByTitleContainsOrderByOpendateDesc(String title);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Contents c SET c.view_count = c.view_count+1 WHERE c.contents_id = :contents_id")
+    int ContentsVisit(@Param("contents_id") Long contents_id);
 
 }

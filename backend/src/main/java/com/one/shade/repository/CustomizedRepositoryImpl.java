@@ -1,22 +1,20 @@
 package com.one.shade.repository;
 
-import com.one.shade.domain.QContents;
-import com.one.shade.domain.QContentsUser;
-import com.one.shade.domain.QGenre;
-import com.one.shade.domain.QPlatform;
+import com.one.shade.domain.*;
 import com.one.shade.util.PredicateQuery;
 import com.one.shade.vo.ContentsListVO;
+import com.one.shade.vo.ReviewsListVO;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public class CustomizedContentsRepositoryImpl implements CustomizedContentsRepository{
+public class CustomizedRepositoryImpl implements CustomizedRepository{
     private final JPAQueryFactory queryFactory;
 
 
-    private CustomizedContentsRepositoryImpl(final JPAQueryFactory queryFactory) {
+    private CustomizedRepositoryImpl(final JPAQueryFactory queryFactory) {
         this.queryFactory = queryFactory;
     }
     @Override
@@ -39,4 +37,18 @@ public class CustomizedContentsRepositoryImpl implements CustomizedContentsRepos
 
         return list;
     }
+
+    @Override
+    public List<ReviewsListVO> reviewList(Long contents_id) {
+        List<ReviewsListVO> list = queryFactory.select(Projections.constructor(ReviewsListVO.class, QReviews.reviews.reviewId,QReviews.reviews.id,QUser.user.nickname,QReviews.reviews.comment,QReviews.reviews.createDate,QReviews.reviews.modify_date))
+                .from(QReviews.reviews)
+                .leftJoin(QUser.user)
+                .on(QReviews.reviews.id.eq(QUser.user.id))
+                .where(QReviews.reviews.contentsId.eq(contents_id).and(QReviews.reviews.deleteCheck.eq("N")))
+                .orderBy(QReviews.reviews.createDate.desc())
+                .fetch();
+        return list;
+    }
+
+
 }

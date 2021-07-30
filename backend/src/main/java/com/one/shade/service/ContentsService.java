@@ -11,11 +11,13 @@ public interface ContentsService {
 
     List<ContentsListVO> movieList(Pageable pageable, List<Long> platform_ids, Long genre_id, String object_type, Long id);
 
-    ContentMovieDetailVO movieDetail(Long contents_id);
+    ContentMovieDetailVO movieDetail(Long contents_id,Long id);
 
     List<ContentSummaryVO> listSummary();
 
     void updateKeyword(String keyword,Long contents_id);
 
     List<ContentsListVO> findTitle(String title);
+
+    int ContentsVisit(Long contents_id);
 }

@@ -13,7 +13,7 @@ import java.util.Collection;
 @NamedNativeQuery(
         name = "ContentMovieDetailVO",
         query = "SELECT " +
-                "   c.contents_id,c.summary,c.video,genre_names,genre_ids,actor_names,actor_ids,character_names,director_name,director_id,c.title,c.playtime,c.opendate,platform_names,monetization_types,retail_prices,urls,presentation_types " +
+                "   check_like,c.poster,c.title,c.contents_id,c.summary,c.video,genre_names,genre_ids,actor_names,actor_ids,character_names,director_name,director_id,c.title,c.playtime,c.opendate,platform_names,monetization_types,retail_prices,urls,presentation_types " +
                 "FROM " +
                 "   contents c " +
                 "LEFT join " +
@@ -69,6 +69,9 @@ import java.util.Collection;
                 "       contents_id = :contents_id) AS pf " +
                 "ON " +
                 "   c.contents_id = pf.contents_id " +
+                "LEFT JOIN " +
+                "   (SELECT * FROM contents_user WHERE id = :id) cu " +
+                "ON c.contents_id = cu.contents_id "+
                 "WHERE " +
                 "   c.contents_id = :contents_id",
         resultSetMapping = "ContentsMovieDetailVO2"
@@ -79,6 +82,7 @@ import java.util.Collection;
                 targetClass = ContentMovieDetailVO.class,
                 columns = {
                         @ColumnResult(name = "contents_id",type = Long.class),
+                        @ColumnResult(name = "poster",type = String.class),
                         @ColumnResult(name = "summary",type = String.class),
                         @ColumnResult(name = "video",type = String.class),
                         @ColumnResult(name = "genre_names",type = String.class),
@@ -95,7 +99,8 @@ import java.util.Collection;
                         @ColumnResult(name = "monetization_types",type = String.class),
                         @ColumnResult(name = "retail_prices",type = String.class),
                         @ColumnResult(name = "urls",type = String.class),
-                        @ColumnResult(name = "presentation_types",type = String.class)
+                        @ColumnResult(name = "presentation_types",type = String.class),
+                        @ColumnResult(name = "check_like",type = String.class)
 
                 }
         )
@@ -133,5 +138,7 @@ public class Contents {
     private String video;
 
     private String keyword;
+
+    private Long view_count;
 
 }

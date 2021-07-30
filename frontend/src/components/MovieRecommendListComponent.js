@@ -190,7 +190,7 @@ export default function MovieRecommendComponent() {
                     <CardMedia
                       className={classes.media}
                       title="contents_id"
-                      image={'https://images.justwatch.com'}
+                      image={'https://images.justwatch.com/poster/204867081/s332'}
                     >
                     </CardMedia>
                   </Link>

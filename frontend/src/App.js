@@ -35,7 +35,7 @@ function App() {
             <Switch>
               <Route path = "/movieList" component = {MovieListComponent}></Route>
               <Route path = "/movieDetail/:contents_id" component = {MovieDetailComponent}></Route>
-              <Route path = "/movieRecommend" component = {MovieRecommendComponent}></Route>
+              <Route path = "/recommend" component = {MovieRecommendComponent}></Route>
               {/* <Route exact path={["/", "/home"]} component={Home} /> */}
               <Route exact path="/login" component={Login} />
               <Route exact path="/join" component={Join} />

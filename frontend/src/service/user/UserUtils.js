@@ -27,13 +27,13 @@ const getCurrentUser = () => {
         return Promise.reject("No access token set.");
     }
     return request({
-        url: API_BASE_URL + "/api/user/google",
+        url: API_BASE_URL + "/user/google",
         method: 'GET'
     });
 }
 
 const login = (username, password) => {
-    return axios.post(API_BASE_URL + "/api/auth/login", {
+    return axios.post(API_BASE_URL + "/auth/login", {
         username,
         password,
     })
@@ -48,7 +48,7 @@ const login = (username, password) => {
 
 
 const join = (username, email, password, nickname, birthday, gender) => {
-    return axios.post(API_BASE_URL + "/api/auth/join", {
+    return axios.post(API_BASE_URL + "/auth/join", {
         username,
         email,
         password,
@@ -59,13 +59,13 @@ const join = (username, email, password, nickname, birthday, gender) => {
 };
 
 const checkUsername = (username) => {
-    return axios.get(API_BASE_URL + "/api/auth/check/" + username,{
+    return axios.get(API_BASE_URL + "/auth/check/" + username,{
         username,
     })
 }
 
 const updateUser = (username, email, password, nickname) => {
-    return axios.put(API_BASE_URL + "/api/auth/user" , {
+    return axios.put(API_BASE_URL + "/auth/user" , {
         username,
         email,
         password,
@@ -74,29 +74,29 @@ const updateUser = (username, email, password, nickname) => {
 }
 
 const findId = (email) => {
-    return axios.get(API_BASE_URL + "/api/auth/findId/" + email,{
+    return axios.get(API_BASE_URL + "/auth/findId/" + email,{
         email,
     })
 }
 const findPw = (username, email) => {
-    return axios.post(API_BASE_URL + "/api/auth/findPw",{
+    return axios.post(API_BASE_URL + "/auth/findPw",{
         username,
         email,
     })
 }
 const findPwCheck = (username, email) => {
-    return axios.get(API_BASE_URL + "/api/auth/findPw/" + username + "/" + email,{
+    return axios.get(API_BASE_URL + "/auth/findPw/" + username + "/" + email,{
         username,
         email,
     })
 }
 
 export const getPublicContent = () => {
-    return axios.get(API_BASE_URL + "/api/user/all");
+    return axios.get(API_BASE_URL + "/user/all");
 };
 export const getUserBoard = () => {
     return request({
-        url: API_BASE_URL + "/api/user/user",
+        url: API_BASE_URL + "/user/user",
         method: 'GET'
     });
 };
@@ -105,7 +105,7 @@ export const getUserBoard = () => {
 //     return axios.get(API_BASE_URL + "/api/user/user", {headers : authHeader } );
 // };
 export const getAdminBoard = () => {
-    return axios.get(API_BASE_URL + "/api/user/admin", {headers : request() });
+    return axios.get(API_BASE_URL + "/user/admin", {headers : request() });
 };
 
 

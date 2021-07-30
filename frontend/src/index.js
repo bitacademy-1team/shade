@@ -18,7 +18,7 @@ let api = "";
 let apiResult = [];
 let finalResult = [];
 let i = 0;
-const api_url = "http://localhost:8080/api"; 
+const api_url = "http://52.79.189.13:8080/api"; 
 async function btn1(){
 	//alert("hi");
 	var justwatch = new JustWatch();

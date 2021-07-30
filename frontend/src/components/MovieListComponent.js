@@ -16,6 +16,7 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import reviewService from "../service/review/reviewService";
 
 import MovielistPlatform from "./movie/featrue/movielistplatform/MovielistPlatform"
 import LikeDislikes from "./movie/featrue/likedislikes/LIkeDislikes";
@@ -25,6 +26,8 @@ import Naver from "../img/naver.jpeg";
 import Wavve from "../img/wavve.jpeg";
 import Netflix from "../img/netflix.jpeg";
 import Watcha from "../img/watcha.jpeg";
+import { ACCESS_TOKEN } from "../service/oauth2/OAuth";
+import ReviewComponnent from "./review/ReviewComponnent";
 // import Google from "../img/google";
 // import Naver from "../img/naver";
 // import Netflix from "../img/netflix";
@@ -201,6 +204,7 @@ export default function ContentList(props) {
   const [movieDetail, setMovieDetail] = useState({})
   const [anchorEl, setAnchorEl] = React.useState(null);
   const menuopen = Boolean(anchorEl);
+  const [content_id,setContent_id] = useState('');
 
   //  리스트 무한스크롤 (ContentsService, lastPageElementRef)
   const {
@@ -234,7 +238,10 @@ export default function ContentList(props) {
   //  모달 (HandleOpen, HandleClose)
   const handleOpen = (contents_id) => {
     MovieDetailService.getMovieDetail(contents_id).then(res => {
+      // alert(res.data.check_like)
+      // alert(res.data.title)
       setMovieDetail(res.data)
+      setContent_id(res.data.contents_id)
     });
     setOpen(true);
   }
@@ -242,6 +249,13 @@ export default function ContentList(props) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const createReview = (contents_id,comment) => {
+    let token = localStorage.getItem(ACCESS_TOKEN)
+    let result = reviewService.createReview(contents_id,comment,token)
+
+    alert(result)
+  }
 
   return (
     <React.Fragment>
@@ -294,7 +308,7 @@ export default function ContentList(props) {
                                 <div>
                                   <h1>{movieDetail.title}</h1>
                                   <Box className={classes.like}>
-                                    <LikeDislikes name="1234" contents_id={l.contents_id} />
+                                  <LikeDislikes check_like={movieDetail.check_like} contents_id={movieDetail.contents_id} />
                                     {/* <IconButton><ThumbUpIcon/></IconButton>
                                       <IconButton><ThumbDownIcon  color="secondary"/></IconButton> */}
                                   </Box>
@@ -355,76 +369,7 @@ export default function ContentList(props) {
                               <caption className={classes.caption}>* 이미지 클릭시 해당 사이트로 이동됩니다.</caption> <br />
                               <caption className={classes.caption}>* SD, HD, 4K는 해상도를 의미합니다.</caption> <br /><br />
                             </Grid>
-                            <Grid item xs={12} sm={12}>
-                              <h2>리뷰</h2>
-                              <TextField
-                                className={classes.margin}
-                                id="input-with-icon-textfield"
-                                label="댓글을 작성해 주세요"
-                                fullWidth
-                                InputProps={{
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      <Button>
-                                        등록
-                                      </Button>
-                                    </InputAdornment>
-                                  ),
-                                }}
-                              />
-                              <Grid>
-                                <List className={classes.commentList}>
-                                  <ListItem alignItems="flex-start">
-                                    <ListItemText
-                                      primary="username"
-                                      secondary={
-                                        <React.Fragment>
-                                          <Typography
-                                            component="span"
-                                            variant="body2"
-                                            className={classes.inline}
-                                            color="textPrimary"
-                                          >
-                                          </Typography>
-                                          {"avndklsafnkldsnaklfdnskalfnkdlsafnklsa"}
-                                        </React.Fragment>
-                                      }
-                                    />
-                                    <div>
-                                      <IconButton
-                                        aria-label="more"
-                                        aria-controls="long-menu"
-                                        aria-haspopup="true"
-                                        onClick={menuHandleClick}
-                                      >
-                                        <MoreVertIcon />
-                                      </IconButton>
-                                      <Menu
-                                        id="long-menu"
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={menuopen}
-                                        onClose={menuHandleClose}
-                                        anchorOrigin={{
-                                          vertical: 'bottom',
-                                          horizontal: 'right',
-                                        }}
-                                      >
-                                        {options.map((option) => (
-                                          <MenuItem
-                                            key={option}
-                                            selected={option === "Pyxis"}
-                                            onClick={menuHandleClose}
-                                          >
-                                            {option}
-                                          </MenuItem>
-                                        ))}
-                                      </Menu>
-                                    </div>
-                                  </ListItem>
-                                </List>
-                              </Grid>
-                            </Grid>
+                            <ReviewComponnent contents_id = {content_id} />
                           </Grid>
                         </Card>
                       </Container>
@@ -448,12 +393,6 @@ export default function ContentList(props) {
                       </CardActionArea>
                       <Grid>
                         <LikeDislikes check_like={l.check_like} contents_id={l.contents_id} />
-                        {/* <IconButton type="button" onClick>
-                          <ThumbUpIcon color="primary"/>
-                        </IconButton>
-                        <IconButton type="button" onClick>
-                          <ThumbDownIcon/>
-                        </IconButton> */}
                       </Grid>
                     </Card>
                   </Grid>

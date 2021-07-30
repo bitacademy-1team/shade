@@ -1,7 +1,8 @@
 import axios from 'axios'; 
 import { useEffect, useState } from 'react';
+import { API_BASE_URL_ } from './oauth2/OAuth';
 
-const BOARD_API_BASE_URL = "http://localhost:8000/cu/"; 
+const BOARD_API_BASE_URL = API_BASE_URL_+"/cu/"; 
 
 export default function MovieRecommendListService(){
 

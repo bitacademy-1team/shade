@@ -57,8 +57,8 @@ public class ContentsServiceImpl  implements ContentsService{
 
     @Transactional
     @Override
-    public ContentMovieDetailVO movieDetail(Long contents_id){
-        return contentsRepository.movieDetail(contents_id);
+    public ContentMovieDetailVO movieDetail(Long contents_id,Long id){
+        return contentsRepository.movieDetail(contents_id,id);
     }
 
 
@@ -77,7 +77,7 @@ public class ContentsServiceImpl  implements ContentsService{
     @Transactional
     @Override
     public List<ContentsListVO> findTitle(String title){
-        List<Contents> managers = contentsRepository.findTop12ByTitleContains(title);
+        List<Contents> managers = contentsRepository.findTop5ByTitleContainsOrderByOpendateDesc(title);
         List<ContentsListVO> list = managers.stream().map(
                 contentsListVO -> new ContentsListVO(
                         contentsListVO.getContents_id(),
@@ -86,5 +86,11 @@ public class ContentsServiceImpl  implements ContentsService{
                 )).collect(Collectors.toList());
 
         return list;
+    }
+
+    @Transactional
+    @Override
+    public int ContentsVisit(Long contents_id){
+        return contentsRepository.ContentsVisit(contents_id);
     }
 }

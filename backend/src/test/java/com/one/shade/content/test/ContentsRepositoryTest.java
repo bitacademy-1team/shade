@@ -1,17 +1,14 @@
 package com.one.shade.content.test;
 
-import com.one.shade.security.auth.PrincipalDetails;
 import com.one.shade.domain.*;
 import com.one.shade.dto.ContentsListDto;
 import com.one.shade.dto.ContentsUserDto;
-import com.one.shade.repository.ContentsRepository;
-import com.one.shade.repository.ContentsUserRepository;
-import com.one.shade.repository.UserRepository;
+import com.one.shade.repository.*;
+import com.one.shade.security.auth.PrincipalDetails;
 import com.one.shade.service.ContentsServiceImpl;
+import com.one.shade.service.ReviewsService;
 import com.one.shade.util.PredicateQuery;
-import com.one.shade.vo.ContentSummaryVO;
-import com.one.shade.vo.ContentsListVO;
-import com.one.shade.vo.GenreRatingVO;
+import com.one.shade.vo.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.EntityPath;
 import com.querydsl.core.types.Predicate;
@@ -46,6 +43,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -65,6 +63,14 @@ public class ContentsRepositoryTest{
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
     private JPAQueryFactory queryFactory;
+    @Autowired
+    private EpisodeRepository episodeRepository;
+    @Autowired
+    private PlatformRepository platformRepository;
+    @Autowired
+    private ReviewsRepository reviewsRepository;
+    @Autowired
+    private ReviewsService reviewsService;
 
     @PersistenceUnit
     private EntityManagerFactory emf;
@@ -158,7 +164,7 @@ public class ContentsRepositoryTest{
     @Test
     @Transactional
     public void detail(){
-        System.out.println(contentsRepository.movieDetail(835626L));
+        System.out.println(contentsRepository.movieDetail(835626L,1l));
 
     }
 
@@ -469,5 +475,70 @@ public class ContentsRepositoryTest{
         List<ContentsListVO> list = contentsService.findTitle("어");
         System.out.println(list.size());
         System.out.println(list);
+    }
+
+    @Test
+    @Transactional
+    public void showDetail(){
+        Long contents_id = 1045767l;
+        Long id = 1l;
+        String sql = "SELECT c.contents_id,c.title,c.opendate,c.playtime,c.video,c.summary,c.poster,s.sea_video,sea_poster,genre_names,actor_names,sea_list,sea_id_list,check_like FROM contents c LEFT JOIN (SELECT s1.sea_list,s1.sea_id_list,s2.* FROM (select contents_id,GROUP_CONCAT(sea_title ORDER BY sea_opendate,sea_num) AS sea_list,GROUP_CONCAT(season_id ORDER BY sea_opendate,sea_num) AS sea_id_list FROM seasons WHERE contents_id = "+contents_id+") s1 LEFT JOIN (SELECT * FROM seasons ORDER BY sea_opendate ,sea_title ) s2 ON s2.contents_id=s1.contents_id ORDER BY sea_opendate desc,sea_num LIMIT 1)s ON c.contents_id = s.contents_id left join contents_genre cg ON c.contents_id = cg.contents_id LEFT JOIN (SELECT contents_id,GROUP_CONCAT(genre_name SEPARATOR ',') AS genre_names,GROUP_CONCAT(cg.genre_id SEPARATOR ',') AS genre_ids FROM contents_genre cg LEFT JOIN genre g ON cg.genre_id = g.genre_id WHERE cg.contents_id = "+contents_id+") AS genre ON c.contents_id = genre.contents_id LEFT JOIN (SELECT season_id,contents_id,GROUP_CONCAT(people_name SEPARATOR ',') AS actor_names,GROUP_CONCAT(ca.people_id SEPARATOR ',') AS actor_ids,GROUP_CONCAT(ca.character_name SEPARATOR ',') AS character_names FROM casting ca LEFT JOIN people p ON ca.people_id=p.people_id WHERE ca.contents_id="+contents_id+" AND ca.character_name IS NOT NULL AND ca.role = 'ACTOR' GROUP BY season_id) AS actor ON c.contents_id = actor.contents_id AND s.season_id = actor.season_id left JOIN (SELECT * from contents_user where id = "+id+") cu ON c.contents_id = cu.contents_id WHERE c.contents_id = "+contents_id+" ORDER BY sea_num DESC LIMIT 1";
+        Query nativeQuery =  em.createNativeQuery(sql);
+        JpaResultMapper jpaMapper = new JpaResultMapper();
+        ContentsShowDetailVO contentsShowDetailVO = jpaMapper.uniqueResult(nativeQuery,ContentsShowDetailVO.class);
+
+        System.out.println(contentsShowDetailVO);
+
+
+    }
+
+    @Test
+    @Transactional
+    public void episodeTest(){
+
+        List<Episode> list = episodeRepository.findBySeasonId(25l);
+
+        List<Platform> list2 = platformRepository.findByEpisodeId(411l);
+
+
+        List<EpisodePlatformVO> li = list2.stream().map(
+                platform -> new EpisodePlatformVO(
+                        platform.getContents_id(),
+                        platform.getPlatform_id(),
+                        platform.getMonetization_type(),
+                        platform.getRetail_price(),
+                        platform.getUrl(),
+                        platform.getPresentation_type(),
+                        platform.getEpisodeId()
+                )).collect(Collectors.toList());
+        System.out.println(li);
+    }
+
+    @Test
+    @Transactional
+    public void reviewsListTest(){
+        List<ReviewsListVO> list = reviewsService.reviewsByContentsId(1l);
+        System.out.println(list);
+    }
+
+    @Test
+    @Transactional
+    public void reviewModifyTest(){
+        int r = reviewsService.reviewModify(1l,2l,"by");
+        System.out.println(r);
+    }
+
+    @Test
+    @Transactional
+    public void reviewCreateTest(){
+        int r = reviewsService.reviewCreate(1l,1l,"hello");
+        System.out.println(r);
+    }
+
+    @Test
+    @Transactional
+    public void reviewDeleteTest(){
+        int r = reviewsService.reviewDelete(1l,1l);
+        System.out.println(r);
     }
 }

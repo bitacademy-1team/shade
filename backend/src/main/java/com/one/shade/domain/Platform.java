@@ -37,6 +37,7 @@ public class Platform {
 
     private String object_type;
 
-    private Long episode_id;
+    @Column(name ="episode_id")
+    private Long episodeId;
 
 }

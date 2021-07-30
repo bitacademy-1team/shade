@@ -1,7 +1,7 @@
 import axios from 'axios'; 
 import { useEffect, useState } from 'react';
-
-const BOARD_API_BASE_URL = "http://127.0.0.1:8080/contents/"; 
+import {API_BASE_URL_,} from '../service/oauth2/OAuth';
+const BOARD_API_BASE_URL = API_BASE_URL_+"/contents/"; 
 
 export default function ContentsService(){
     const [list,setList] = useState([]);

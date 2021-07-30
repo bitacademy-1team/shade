@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
+//@CrossOrigin(origins = "http://52.79.189.13")
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
@@ -104,11 +105,18 @@ public class ContentsController {
     public ContentMovieDetailVO movieDetail(@CurrentUser PrincipalDetails principalDetails,Long contents_id){
         //로그인한 사용자라면 로그인한 사용자의 id 와 contents_id를 사용해서 contents_user update or insert
         int result = 0;
+        Long id = null;
         if(principalDetails != null){
-            result = contentsUserService.ContentsUserVisit(principalDetails.getId(), contents_id);
+            id = principalDetails.getId();
+            result = contentsUserService.ContentsUserVisit(id, contents_id);
         }
-        System.out.println(result);
-        return contentsService.movieDetail(contents_id);
+        int visitResult = contentsService.ContentsVisit(contents_id);
+        
+        String visitStr = visitResult == 0 ? "방문자 카운트 증가 실패!!" : "방문자 카운트 증가 성공!!";
+        
+        System.out.println(visitStr);
+        
+        return contentsService.movieDetail(contents_id,id);
     }
 
     @GetMapping("/movieRecommend")
