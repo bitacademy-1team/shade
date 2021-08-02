@@ -84,6 +84,7 @@ dependencies {
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	// https://mvnrepository.com/artifact/org.qlrm/qlrm
 	implementation group: 'org.qlrm', name: 'qlrm', version: '3.0.1'

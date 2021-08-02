@@ -21,6 +21,7 @@ import OAuth2RedirectHandler from './service/oauth2/OAuth2RedirectHandler'
 //import Profile from './components/user/Profile';
 import Contents from './components/contents/contents'
 import api from './components/api'
+import ChatRoom from './components/chat/ChatRoom';
 
 function App() {
 
@@ -49,6 +50,7 @@ function App() {
               {/* <Route exact path="/test" component={Headerbox}/> */}
               <Route exact path="/contents" component={Contents} />
               <Route exact path="/api" component={api} />
+              <Route exact path="/chat" component={ChatRoom} />
               <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} />
             </Switch>
           </Grid>
