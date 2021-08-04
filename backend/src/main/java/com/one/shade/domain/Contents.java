@@ -13,7 +13,7 @@ import java.util.Collection;
 @NamedNativeQuery(
         name = "ContentMovieDetailVO",
         query = "SELECT " +
-                "   check_like,c.poster,c.title,c.contents_id,c.summary,c.video,genre_names,genre_ids,actor_names,actor_ids,character_names,director_name,director_id,c.title,c.playtime,c.opendate,platform_names,monetization_types,retail_prices,urls,presentation_types " +
+                "   check_like,c.poster as poster,c.title,c.contents_id,c.summary as summary,c.video as video,genre_names,genre_ids,actor_names,actor_ids,character_names,director_name,director_id,c.title,c.playtime,c.opendate,platform_names,monetization_types,retail_prices,urls,presentation_types " +
                 "FROM " +
                 "   contents c " +
                 "LEFT join " +
@@ -73,7 +73,7 @@ import java.util.Collection;
                 "   (SELECT * FROM contents_user WHERE id = :id) cu " +
                 "ON c.contents_id = cu.contents_id "+
                 "WHERE " +
-                "   c.contents_id = :contents_id",
+                "   c.contents_id = :contents_id limit 1",
         resultSetMapping = "ContentsMovieDetailVO2"
 )
 @SqlResultSetMapping(
@@ -82,9 +82,9 @@ import java.util.Collection;
                 targetClass = ContentMovieDetailVO.class,
                 columns = {
                         @ColumnResult(name = "contents_id",type = Long.class),
+                        @ColumnResult(name = "video",type = String.class),
                         @ColumnResult(name = "poster",type = String.class),
                         @ColumnResult(name = "summary",type = String.class),
-                        @ColumnResult(name = "video",type = String.class),
                         @ColumnResult(name = "genre_names",type = String.class),
                         @ColumnResult(name = "genre_ids",type = String.class),
                         @ColumnResult(name = "actor_names",type = String.class),

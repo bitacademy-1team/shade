@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_BASE_URL, ACCESS_TOKEN } from '../oauth2/OAuth';
+import { API_BASE_URL, ACCESS_TOKEN, ID } from '../oauth2/OAuth';
 
 
 export const request = async (options) => {
@@ -41,6 +41,7 @@ const login = (username, password) => {
         // alert(JSON.stringify(response.data.accessToken))
         if(response.data.accessToken){
             localStorage.setItem(ACCESS_TOKEN,response.data.accessToken);
+            localStorage.setItem(ID,response.data.id)
         }
         return response.data;
     });

@@ -34,7 +34,7 @@ public class CustomizedRepositoryImpl implements CustomizedRepository{
                 .limit(pageable.getPageSize())
                 .offset(pageable.getPageNumber())
                 .fetch();
-
+        System.out.println(list);
         return list;
     }
 

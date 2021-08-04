@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { IconButton } from "@material-ui/core";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
@@ -10,6 +10,11 @@ export default function LikeDislikes({ check_like, contents_id },l) {
 
   let url
   let token
+
+  useEffect(() =>{
+    setColor(check_like)
+  },[check_like])
+
   if (localStorage.getItem(ACCESS_TOKEN)) {
     token = localStorage.getItem(ACCESS_TOKEN);
   }

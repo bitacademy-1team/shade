@@ -27,7 +27,7 @@
 // }
 
 
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import Slider from "react-slick";
 import { Container } from "@material-ui/core";
 import { Grid, Card, CardActionArea, Link, CardMedia } from "@material-ui/core";
@@ -72,13 +72,22 @@ function SamplePrevArrow(props) {
 }
 
 export default function MovieRecommendComponent() {
+  
   const classes = useStyles();
   const {
     list,
     loading,
-    error
+    error,
+    msg
   } = MovieRecommendListService()
   let contents = useState();
+
+  useEffect(() =>{
+    if(msg==='데이터가 부족합니다!'){
+      alert("에러!!")
+      this.props.history.push("/movieList")
+    }
+  },[msg])
 
   const settings = {
     dots: true,
@@ -123,11 +132,13 @@ export default function MovieRecommendComponent() {
   };
 
   return (
+    
     <div>
       <Container className={classes.cardGrid} maxWidth="lg">
+      
         {list.map((l) => {
           contents = l.contents
-
+          
           return <div key={l.title}>
             <h3>{l.title}</h3>
             <Slider {...settings}>
@@ -153,6 +164,11 @@ export default function MovieRecommendComponent() {
           </div>
         }
         )}
+        {msg !== '' ? (
+          <div>{msg}</div>
+        ):(
+          <div></div>
+        )}
 
 
         <br /><br /><br /><br /><br /><br />
@@ -161,6 +177,20 @@ export default function MovieRecommendComponent() {
           <Slider {...settings}>
             <div>
               <h3>1</h3>
+              <Grid item xs={6} sm={3} md={2}>
+              <Card className={classes.card} >
+                <CardActionArea type="button">
+                  <Link to={'/moviedetail/'}>
+                    <CardMedia
+                      className={classes.media}
+                      title="contents_id"
+                      image={'https://images.justwatch.com/poster/204867081/s332'}
+                    >
+                    </CardMedia>
+                  </Link>
+                </CardActionArea>
+              </Card>
+            </Grid>
             </div>
             <div>
               <h3>2</h3>

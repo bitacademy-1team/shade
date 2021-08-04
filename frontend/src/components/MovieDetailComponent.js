@@ -246,7 +246,6 @@ export default function MovieDetailComponent() {
                           <React.Fragment>
                             <Typography
                               component="span"
-                              variant="body2"
                               className={classes.inline}
                               color="textPrimary"
                             >

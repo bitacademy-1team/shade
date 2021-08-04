@@ -14,6 +14,7 @@ import axios from "axios";
 export default function ReviewComponnent({contents_id},props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [list,setList] = useState([]);
+    const [re_id,setRe_id] = useState('');
     const menuopen = Boolean(anchorEl);
     const form = useRef();
     const ax = (contents_id) =>{
@@ -137,8 +138,7 @@ export default function ReviewComponnent({contents_id},props) {
     }
 
     const modifyReview = (e) => {
-        let review_id = e.target.key;
-        let i = reviewService.modifyReview(review_id, comment);
+        let i = reviewService.modifyReview(re_id, comment);
         if(i===-1){
             alert("로그인이 필요합니다.")
         }else if(i===0){
@@ -149,8 +149,7 @@ export default function ReviewComponnent({contents_id},props) {
     }
 
     const deleteReview = (e) => {
-        let review_id = e.target.key;
-        let i = reviewService.deleteReview(review_id);
+        let i = reviewService.deleteReview(re_id);
         if(i===-1){
             alert("로그인이 필요합니다.")
         }else if(i===0){
@@ -163,6 +162,7 @@ export default function ReviewComponnent({contents_id},props) {
     const classes = useStyles();
 
     const menuHandleClick = (event) => {
+        setRe_id(event.currentTarget.getAttribute('data-msg'));
         setAnchorEl(event.currentTarget);
     };
 
@@ -219,6 +219,7 @@ export default function ReviewComponnent({contents_id},props) {
                                 aria-label="more"
                                 aria-controls="long-menu"
                                 aria-haspopup="true"
+                                data-msg={l.review_id}
                                 onClick={menuHandleClick}
                             >
                                 <MoreVertIcon />
@@ -234,21 +235,22 @@ export default function ReviewComponnent({contents_id},props) {
                                     horizontal: 'right',
                                 }}
                             >
-                                {options.map((option) => (
+                                {/* {options.map((option) => (
                                     <MenuItem
                                         key={option}
                                         selected={option === "Pyxis"}
                                         onClick={menuHandleClose}
+                                        data-msg={l.review_id}
                                     >
                                         {option}
                                     </MenuItem>
-                                ))}
-                                {/* <MenuItem onClick={modifyReview}>
+                                ))} */}
+                                <MenuItem onClick={modifyReview}>
                                     수정
                                 </MenuItem>
                                 <MenuItem onClick={deleteReview}>
                                     삭제
-                                </MenuItem> */}
+                                </MenuItem>
                             </Menu>
                         </div>
                     </ListItem>

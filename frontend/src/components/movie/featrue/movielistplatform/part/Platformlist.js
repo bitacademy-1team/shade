@@ -102,7 +102,7 @@ export default function Platformlist() {
     return (
         <Grid className={classes.title} >
         <ul>
-            <li className={classes.li}>
+            {/* <li className={classes.li}>
                 <Button onClick={Click1}>
                     {net ? (
                         <img className={classes.img} src={Netflix} alt="netflix" />
@@ -146,7 +146,7 @@ export default function Platformlist() {
                         <img className={classes.img} src={Wavveoff} alt="wavveoff"/>
                     )}
                 </Button>
-            </li>
+            </li> */}
         </ul>
       </Grid>
     )

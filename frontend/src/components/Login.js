@@ -118,7 +118,7 @@ export default function SignIn(props) {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" >
           로그인
         </Typography>
         <Form className={classes.form} ref={form} onSubmit={handleLogin} noValidate autoComplete="off">

@@ -7,6 +7,7 @@ import com.one.shade.repository.*;
 import com.one.shade.security.auth.PrincipalDetails;
 import com.one.shade.service.ContentsServiceImpl;
 import com.one.shade.service.ReviewsService;
+import com.one.shade.util.NaverPapagoUtils;
 import com.one.shade.util.PredicateQuery;
 import com.one.shade.vo.*;
 import com.querydsl.core.BooleanBuilder;
@@ -71,6 +72,8 @@ public class ContentsRepositoryTest{
     private ReviewsRepository reviewsRepository;
     @Autowired
     private ReviewsService reviewsService;
+    @Autowired
+    private PeopleRepository peopleRepository;
 
     @PersistenceUnit
     private EntityManagerFactory emf;
@@ -541,4 +544,29 @@ public class ContentsRepositoryTest{
         int r = reviewsService.reviewDelete(1l,1l);
         System.out.println(r);
     }
+
+    @Test
+    public void papagoTest(){
+        NaverPapagoUtils na = new NaverPapagoUtils();
+//        String papa = na.papago("hello");
+
+        List<People> list = queryFactory.selectFrom(QPeople.people)
+                .where(QPeople.people.people_name.isNotNull().and(QPeople.people.people_name.isNotEmpty()))
+                .offset(1000)    //디비에서 확인후 작업 파파고 1일 사용량 번역(500개)
+                .limit(500)
+                .fetch();
+
+        System.out.println(list);
+        System.out.println(list.size());
+        for (People p : list){
+            p.setPeople_name(na.papago(p.getPeople_name()));
+        }
+
+        System.out.println(list);
+
+        peopleRepository.saveAll(list);
+
+    }
+
+
 }

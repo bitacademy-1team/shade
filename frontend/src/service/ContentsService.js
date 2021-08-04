@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { API_BASE_URL, ACCESS_TOKEN } from '../service/oauth2/OAuth';
 
-export default function ExContentsService(query, pageNumber) {
+export default function ExContentsService(query, pageNumber, object_type) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [list, setList] = useState([]);
@@ -23,14 +23,14 @@ export default function ExContentsService(query, pageNumber) {
         axios({
             method: 'GET',
             url: API_BASE_URL+'/movieList',
-            params: {page: pageNumber*20,size:20},
+            params: {page: pageNumber*20,size:20,object_type:object_type},
             headers: {
                 'Authorization': 'Bearer '+token,
                 'Content-Type': 'application/json'
             },
             cancelToken: new axios.CancelToken(c => cancel = c)
         }).then(res => {
-            console.log("hey!!!"+JSON.stringify(res))
+            
             setList(prevList => {
                 return [...new Set([...prevList, ...res.data.map(l => l)])]
             }) 
@@ -41,6 +41,6 @@ export default function ExContentsService(query, pageNumber) {
             setError(true)
         })
         return () => cancel()
-    }, [query, pageNumber])
+    }, [query, pageNumber, object_type])
     return { loading, error, list, hasMore }
 }

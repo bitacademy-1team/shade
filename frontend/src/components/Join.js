@@ -142,7 +142,7 @@ export default function Join(props) {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component="h1">
           회원가입
         </Typography>
         <Form className={classes.form} ref={form} onSubmit={handleRegister} noValidate>

@@ -170,7 +170,8 @@ export default function Mypage() {
         />
 
 
-        <Button onClick={reviewOpen}>내가 쓴 글</Button>
+        <Button >내가 쓴 글</Button>
+        {/* onClick={reviewOpen} */}
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -194,7 +195,8 @@ export default function Mypage() {
         </Modal>
 
 
-        <Button onClick={reviseOpen}>개인정보수정</Button>
+        <Button >개인정보수정</Button>
+        {/* onClick={reviseOpen} */}
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -276,7 +278,8 @@ export default function Mypage() {
         </Modal>
 
 
-        <Button onClick={settingOpen}>설정</Button>
+        <Button >설정</Button>
+        {/* onClick={settingOpen} */}
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -300,7 +303,8 @@ export default function Mypage() {
         </Modal>
 
 
-        <Button href={"/login"} onClick={logOut}>로그아웃</Button>
+        <Button href={"/login"} >로그아웃</Button>
+        {/* onClick={logOut} */}
       </Drawer>
       <div>
         <AppBar position="fixed" color="default" className={classes.appBar}>

@@ -58,8 +58,9 @@ export default function ArrayMenu() {
           ref={anchorRef}
           aria-controls={open ? "menu-list-grow" : undefined}
           aria-haspopup="true"
-          onClick={handleToggle}
+          
         >
+          {/* onClick={handleToggle} */}
           정렬
         </Button>
         <Popper

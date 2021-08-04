@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { fade, makeStyles } from "@material-ui/core/styles";
+import { alpha, makeStyles } from "@material-ui/core/styles";
 import UserUtils from '../service/user/UserUtils'
 import { AppBar, Button, CssBaseline, Toolbar, Typography, Link, InputBase, IconButton, Menu, MenuItem, Paper, Popper, Grow, MenuList, ClickAwayListener } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
@@ -66,9 +66,9 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginLeft: 0,
     width: '100%',
@@ -226,7 +226,7 @@ export default function Pricing() {
             )}
             </Typography>
             <div className={classes.toolbarList}>
-              <Typography variant="p" color="inherit" className={classes.toolbar}>
+              <Typography  color="inherit" className={classes.toolbar}>
                 {currentUser ? (
                   <Link variant="button" color="textPrimary" href="/recommend" className={classes.link}>
                     추천
@@ -237,28 +237,28 @@ export default function Pricing() {
                   </Link>
                 )}
               </Typography>
-              <Typography variant="p" color="inherit" className={classes.toolbar}>
+              <Typography  color="inherit" className={classes.toolbar}>
                 <Link variant="button" color="textPrimary" href="/faq" className={classes.link}>
                   FAQ
                 </Link>
               </Typography>
-              <Typography variant="p" color="inherit" className={classes.toolbar}>
+              <Typography color="inherit" className={classes.toolbar}>
                 <Link variant="button" color="textPrimary" href="/movielist" className={classes.link}>
                   영화
                 </Link>
               </Typography>
-              <Typography variant="p" color="inherit" className={classes.toolbar}>
+              <Typography color="inherit" className={classes.toolbar}>
                 <Link variant="button" color="textPrimary" href="/tvlist" className={classes.link}>
                   TV
                 </Link>
               </Typography>
               {/* 목록메뉴 */}
-              {/* <Typography variant="p" color="inherit" className={classes.toolbar}>
+              {/* <Typography color="inherit" className={classes.toolbar}>
                 <Button
                   ref={anchorRef}
                   aria-controls={opan ? 'menu-list-grow' : undefined}
                   aria-haspopup="true"
-                  onClick={handleToggle}
+                  
                 >
                   목록
                 </Button>
@@ -345,6 +345,7 @@ export default function Pricing() {
                   )}
                   <MenuItem onClick={handleClose}>
                     <Button type="button" href={"/login"} onClick={logOut}>
+                      {/* onClick={logOut} */}
                       로그아웃
                     </Button>
                   </MenuItem>

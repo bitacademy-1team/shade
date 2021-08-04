@@ -87,17 +87,19 @@ public class ContentsController {
     }
 
     @GetMapping("/movieList")
-    public List<ContentsListVO> movieList(@PageableDefault(page = 0) Pageable pageRequest,@CurrentUser PrincipalDetails principalDetails){
+    public List<ContentsListVO> movieList(@PageableDefault(page = 0) Pageable pageRequest,@CurrentUser PrincipalDetails principalDetails,@RequestParam("object_type") String object_type){
         List<Long> platform_ids = new ArrayList<>();
         platform_ids.add(8l);
         Long genre_id = 3l;
-        String object_type = "movie";
+        System.out.println("object type : "+object_type);
+//        String object_type = "movie";
         System.out.println(pageRequest);
         Long id = 0l;
         if(principalDetails != null){
             id = principalDetails.getId();
         }
         System.out.println("movie List id : "+id);
+        System.out.println();
         return contentsService.movieList(pageRequest,platform_ids,genre_id,object_type,id);
     }
 

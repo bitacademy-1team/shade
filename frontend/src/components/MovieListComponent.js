@@ -1,9 +1,9 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {
   Container, Card, Grid, CardMedia, CardActionArea, AppBar, Toolbar, Typography, CssBaseline, useScrollTrigger, Fab, Zoom,
-  Button, Modal, Backdrop, Fade,
+    Modal, Backdrop, Fade,
   Box, Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Paper, TextField, InputAdornment,
   List, ListItem, ListItemText, IconButton, Menu, MenuItem
@@ -28,42 +28,12 @@ import Netflix from "../img/netflix.jpeg";
 import Watcha from "../img/watcha.jpeg";
 import { ACCESS_TOKEN } from "../service/oauth2/OAuth";
 import ReviewComponnent from "./review/ReviewComponnent";
+import ModalComponent from "./modal/Modal";
 // import Google from "../img/google";
 // import Naver from "../img/naver";
 // import Netflix from "../img/netflix";
 // import Watcha from "../img/watcha";
 // import Wavve from "../img/wavve";
-
-const useStyles = makeStyles((theme) => ({
-  cardGrid: {
-    paddingTop: theme.spacing(8),
-    paddingBottom: theme.spacing(8),
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column"
-  },
-  cardMedia: {
-    paddingTop: "56.25%" // 16:9
-  },
-  cardContent: {
-    flexGrow: 1
-  },
-  media: {
-    height: 285,
-    width: "100%",
-  },
-  dt: {
-    backgroundColor: "black",
-    padding: "5px",
-    position: "sticky",
-    margin: 0,
-    overflow: "auto",
-    opacity: 0.7,
-    float: "none",
-  },
-}));
 
 export default function ContentList(props) {
 
@@ -205,14 +175,15 @@ export default function ContentList(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const menuopen = Boolean(anchorEl);
   const [content_id,setContent_id] = useState('');
-
+  const [detail_like,setDetail_like] = useState('');
+  const [video,setVideo] = useState('');
   //  리스트 무한스크롤 (ContentsService, lastPageElementRef)
   const {
     list,
     hasMore,
     loading,
     error
-  } = ContentsService(query, pageNumber)
+  } = ContentsService(query, pageNumber , 'movie')
 
   const observer = useRef()
   const lastPageElementRef = useCallback(node => {
@@ -237,16 +208,22 @@ export default function ContentList(props) {
 
   //  모달 (HandleOpen, HandleClose)
   const handleOpen = (contents_id) => {
-    MovieDetailService.getMovieDetail(contents_id).then(res => {
-      // alert(res.data.check_like)
-      // alert(res.data.title)
-      setMovieDetail(res.data)
-      setContent_id(res.data.contents_id)
-    });
+    setContent_id(contents_id)
+    setMovieDetail({})
     setOpen(true);
   }
 
+  useEffect(() =>{
+    if(content_id!=='' && content_id!== undefined){
+      MovieDetailService.getMovieDetail(content_id).then(res => {
+        setMovieDetail(res.data)
+      });
+    }
+    
+  },[content_id, open])
   const handleClose = () => {
+    setContent_id('');
+    setMovieDetail({});
     setOpen(false);
   };
 
@@ -267,8 +244,9 @@ export default function ContentList(props) {
           <Grid container spacing={1}>
             {list.map((l, index) => {
               if (list.length === index + 1) {
-                return <div ref={lastPageElementRef} key={l.contents_id}>
-                  <Link to={'/moviedetail/' + l.contents_id}><img src={'https://images.justwatch.com' + l.poster} alt="moviePoster" /></Link>
+                return <div ref={lastPageElementRef} key={"abc"}>
+                  
+                  {/* <Link to={'/moviedetail/' + l.contents_id}><img src={'https://images.justwatch.com' + l.poster} alt="moviePoster" /></Link>
 
                   {/* -- 디테일 페이지 시작 -- */}
                   <Modal
@@ -292,7 +270,7 @@ export default function ContentList(props) {
                               <iframe
                                 className={classes.iframe}
                                 // src={"https://www.youtube.com/embed/"+movieDetail.video+"?autoplay=1"}
-                                src={"https://www.youtube.com/embed/yC62Q_qAdgY?autoplay=1"}
+                                src={"https://www.youtube.com/embed/"+movieDetail.video+"?autoplay=1"}
                                 title="YouTube video player"
                                 frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -308,7 +286,7 @@ export default function ContentList(props) {
                                 <div>
                                   <h1>{movieDetail.title}</h1>
                                   <Box className={classes.like}>
-                                  <LikeDislikes check_like={movieDetail.check_like} contents_id={movieDetail.contents_id} />
+                                  <LikeDislikes check_like={movieDetail.check_like} contents_id={content_id} />
                                     {/* <IconButton><ThumbUpIcon/></IconButton>
                                       <IconButton><ThumbDownIcon  color="secondary"/></IconButton> */}
                                   </Box>
