@@ -63,12 +63,14 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: grey[900],
     color: grey[100],
     boxShadow: theme.shadows[5],
+    display: "flex",
   },
   toolbar: {
     flexWrap: "wrap",
   },
   toolbarTitle: {
     paddingRight: 20,
+    // flexGrow: 1,
   },
   toolbarList: {},
   link: {
@@ -90,6 +92,9 @@ const useStyles = makeStyles((theme) => ({
   },
   shade: {
     color: yellow[700],
+  },
+  search: {
+    flexGrow: 1,
   },
 }));
 
@@ -239,7 +244,9 @@ export default function Pricing() {
                   </Link>
                 </Typography>
               </div>
-              <SearchContents />
+              <div className={classes.search}>
+                <SearchContents />
+              </div>
               {currentUser ? (
                 <div>
                   <IconButton

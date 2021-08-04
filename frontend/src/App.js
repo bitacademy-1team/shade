@@ -22,7 +22,6 @@ import Contents from "./components/contents/contents";
 import api from "./components/api";
 import Main from "./components/Main";
 import Mypage2 from "./components/Mypage2";
-import SearchContents from "./components/contents/search/setest";
 import ChatRoom from "./components/contents/chat/ChatRoom";
 import TVListContent from "./components/tv/list/TVListContent";
 
@@ -48,7 +47,6 @@ function App() {
               {/* <Route exact path={["/", "/home"]} component={Home} /> */}
               <Route exact path={["/main", "/", "/home"]} component={Main} />
               <Route exact path="/mypage" component={Mypage2} />
-              <Route exact path="/searchtest" component={SearchContents} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/join" component={Join} />
               {/* <Route exact path="/profile" component={Profile} /> */}
