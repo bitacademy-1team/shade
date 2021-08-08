@@ -1,20 +1,25 @@
 import { Typography, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
+import { grey } from "@material-ui/core/colors"
 
 const useStyles = makeStyles((theme) => ({
     footer: {
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: grey[900],
       padding: theme.spacing(6)
+    },
+    typographycolor: {
+      color: grey[100],
     }
   }));
 
 function Copyright() {
+  const classes = useStyles();
+
     return (
-      <Typography variant="body2" color="textSecondary" align="center">
+      <Typography className={classes.typographycolor} variant="body2" align="center">
         {"Copyright © "}
         <Link color="inherit" href="/list">
-          Bit Academy Team Project 1조 2021
+          Bit Academy Team Project 1조 2021 
         </Link>{" "}
       </Typography>
     );
@@ -26,6 +31,7 @@ export default function Footer() {
     return (
         <footer className={classes.footer}>
         <Typography
+            className={classes.typographycolor} 
             variant="subtitle1"
             align="center"
             color="textSecondary"
