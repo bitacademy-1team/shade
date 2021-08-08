@@ -20,4 +20,6 @@ public interface ContentsService {
     List<ContentsListVO> findTitle(String title);
 
     int ContentsVisit(Long contents_id);
+
+    List<ContentsListVO> likeList(Long id, String like);
 }

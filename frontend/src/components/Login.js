@@ -6,12 +6,11 @@ import UserUtils from "../service/user/UserUtils";
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
 import { ACCESS_TOKEN, FACEBOOK_AUTH_URL, GOOGLE_AUTH_URL, KAKAO_AUTH_URL, NAVER_AUTH_URL } from "../service/oauth2/OAuth";
-import googleLogo from '../img/google-logo.png';
-import fbLogo from '../img/fb-logo.png';
-import naverLogo  from '../img/naver-logo.png';
-import kakaoLogo  from '../img/kakao-logo.png';
 // import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-
+import naverlogo from "../img/naver-logo.png";
+import googlelogo from "../img/google-logo.png";
+import facebooklogo from "../img/fb-logo.png";
+import kakaologo from "../img/kakao-logo.png";
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -41,6 +40,30 @@ const useStyles = makeStyles((theme) => ({
   },
   ul: {
     liststyle: 'none',
+  },
+  socallogin: {
+    display: "flex",
+    justifyContent: "space-between",
+    
+  },
+  google: {
+    width: 50,
+    
+  },
+  naver: {
+    width: 50,
+    borderRadius: "30px" 
+
+  },
+  facebook: {
+    width: 50,
+    borderRadius: "30px" 
+
+  },
+  kakao: {
+    width: 50,
+    borderRadius: "30px" 
+
   }
 }));
 
@@ -74,6 +97,8 @@ export default function SignIn(props) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+
+  
 
   const onChangeUsername = (e) => {
     const username = e.target.value;
@@ -187,16 +212,25 @@ export default function SignIn(props) {
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
          
         </Form>
-        <div className="social-login">
-                <a className="btn btn-block social-btn google" href={GOOGLE_AUTH_URL}>
-                    <img src={googleLogo} alt="Google" /> 구글 로그인</a>
-                <a className="btn btn-block social-btn google" href={FACEBOOK_AUTH_URL}>
-                    <img src={fbLogo} alt="Facebook" /> 페이스북 로그인</a>
-                <a className="btn btn-block social-btn google" href={NAVER_AUTH_URL}>
-                    <img src={naverLogo} alt="Naver" /> 네이버 로그인</a>
-                <a className="btn btn-block social-btn google" href={KAKAO_AUTH_URL}>
-                    <img src={kakaoLogo} alt="Kakao" /> 카카오톡 로그인</a>
+        <br/><br/>
+        <Grid container>
+          <Grid item xs>
+            <div className={classes.socallogin}>
+              <a  href={GOOGLE_AUTH_URL}>
+                <img className={classes.google} src={googlelogo} alt="google"/>
+              </a>
+              <a  href={NAVER_AUTH_URL}>
+                <img className={classes.naver} src={naverlogo} alt="naver"/>
+              </a>
+              <a  href={FACEBOOK_AUTH_URL}>
+                <img className={classes.facebook} src={facebooklogo} alt="facebook"/>
+              </a>
+              <a  href={KAKAO_AUTH_URL}>
+                <img className={classes.kakao} src={kakaologo} alt="kakao"/>
+              </a>
             </div>
+          </Grid>
+        </Grid>
       </div>
     </Container>
   );

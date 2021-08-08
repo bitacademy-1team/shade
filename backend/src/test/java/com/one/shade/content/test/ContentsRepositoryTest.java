@@ -568,5 +568,16 @@ public class ContentsRepositoryTest{
 
     }
 
+    @Test
+    @Transactional
+    public void likeTest(){
+        String like = "like";
+//        SELECT * FROM contents WHERE contents_id IN
+//        (SELECT contents_id FROM contents_user WHERE id = 1 AND check_like = 'like')
+       List<ContentsListVO> list =  contentsService.likeList(1l,"like");
+
+       System.out.println(list);
+    }
+
 
 }

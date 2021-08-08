@@ -4,6 +4,7 @@ import { Grid } from "@material-ui/core";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import MovieListComponent from "./components/MovieListComponent";
+import ShowListComponent from "./components/ShowListComponent";
 import Join from "./components/Join";
 import Login from "./components/Login";
 import MovieDetailComponent from "./components/MovieDetailComponent";
@@ -21,6 +22,8 @@ import OAuth2RedirectHandler from './service/oauth2/OAuth2RedirectHandler'
 //import Profile from './components/user/Profile';
 import Contents from './components/contents/contents'
 import api from './components/api'
+import ChatRoom from './components/contents/chat/ChatRoom';
+import Main from './components//Main';
 
 function App() {
 
@@ -33,7 +36,9 @@ function App() {
         <Grid item container>
           <Grid item xs={12}>
             <Switch>
+              <Route path = {["/main","/home"]} component={Main}></Route>
               <Route path = "/movieList" component = {MovieListComponent}></Route>
+              <Route path = "/tvList" component = {ShowListComponent}></Route>
               <Route path = "/movieDetail/:contents_id" component = {MovieDetailComponent}></Route>
               <Route path = "/recommend" component = {MovieRecommendComponent}></Route>
               {/* <Route exact path={["/", "/home"]} component={Home} /> */}
@@ -54,6 +59,7 @@ function App() {
           </Grid>
         </Grid>
         <Grid item>
+          <ChatRoom />
           <Footer/>
         </Grid>
       </Grid>

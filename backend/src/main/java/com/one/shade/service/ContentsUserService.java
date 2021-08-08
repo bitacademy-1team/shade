@@ -11,4 +11,6 @@ public interface ContentsUserService {
 
     int ContentsUserVisit(Long id, Long contents_id);
 
+
+
 }

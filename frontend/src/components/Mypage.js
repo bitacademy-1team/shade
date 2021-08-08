@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import UserUtils from "../service/user/UserUtils";
-import { Button, Avatar, Tabs, Tab, Box, Typography, Toolbar, AppBar, CssBaseline, Drawer, Modal, Fade, Container, Grid, Backdrop, Card, TextField } from "@material-ui/core";
-import { ACCESS_TOKEN } from "../service/oauth2/OAuth";
+import { Button, CardMedia, Avatar, Tabs, Tab, Box, Typography, Toolbar, AppBar, CssBaseline, Drawer, Modal, Fade, Container, Grid, Backdrop, Card, TextField } from "@material-ui/core";
+import { ACCESS_TOKEN, API_BASE_URL } from "../service/oauth2/OAuth";
+import axios from "axios";
 
 const drawerWidth = 150;
 
@@ -119,6 +120,38 @@ export default function Mypage() {
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
   const currentUser = UserUtils.getCurrentUser();
+  const [likeList,setLikeList] = useState([]);
+  const [disLikeList,setDisLikeList] = useState([]);
+  useEffect(() => {
+    let token
+        if(localStorage.getItem(ACCESS_TOKEN)) {
+            token =localStorage.getItem(ACCESS_TOKEN);
+        }
+    axios({
+      method:'GET',
+      url: API_BASE_URL+'/likeList?like=like',
+      headers: {
+        'Authorization': 'Bearer '+token,
+        'Content-Type': 'application/json'
+      }
+    }).then(res =>{
+      setLikeList(prevList => {
+        return [...new Set([...prevList, ...res.data.map(l => l)])]
+      })
+    })
+    axios({
+      method:'GET',
+      url: API_BASE_URL+'/likeList?like=unlike',
+      headers: {
+        'Authorization': 'Bearer '+token,
+        'Content-Type': 'application/json'
+      }
+    }).then(res =>{
+      setDisLikeList(prevList => {
+        return [...new Set([...prevList, ...res.data.map(l => l)])]
+      })
+    })
+  },[])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -163,15 +196,15 @@ export default function Mypage() {
         }}
         anchor="left"
       >
-        <Avatar
+        {/* <Avatar
           alt="UserProfile"
           src="/static/images/avatar/1.jpg"
           className={classes.mypageavatar}
-        />
+        /> */}
 
 
-        <Button >내가 쓴 글</Button>
-        {/* onClick={reviewOpen} */}
+        {/* <Button >내가 쓴 글</Button>
+        {/* onClick={reviewOpen} /}
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -192,7 +225,7 @@ export default function Mypage() {
                         </Card>
                 </Container>
             </Fade>
-        </Modal>
+        </Modal> */}
 
 
         <Button >개인정보수정</Button>
@@ -315,21 +348,22 @@ export default function Mypage() {
               aria-label="mypage tabs"
               noWrap
             >
-              <Tab label="찜" {...a11yProps(0)} />
-              <Tab label="좋아요" {...a11yProps(1)} />
-              <Tab label="싫어요" {...a11yProps(2)} />
+              <Tab label="좋아요" {...a11yProps(0)} />
+              <Tab label="싫어요" {...a11yProps(1)} />
             </Tabs>
           </Toolbar>
         </AppBar>
         <main className={classes.content}>
           <TabPanel value={value} index={0}>
-            test1
+            {likeList.map((l,index) => {
+              return <img src = {'https://images.justwatch.com' + l.poster}></img>
+                      
+            })}
           </TabPanel>
           <TabPanel value={value} index={1}>
-            Item Two
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            Item Three
+          {disLikeList.map((l,index) => {
+              return <img src = {'https://images.justwatch.com' + l.poster}></img>
+            })}
           </TabPanel>
         </main>
       </div>

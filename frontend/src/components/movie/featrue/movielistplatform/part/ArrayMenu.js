@@ -61,7 +61,6 @@ export default function ArrayMenu() {
           
         >
           {/* onClick={handleToggle} */}
-          정렬
         </Button>
         <Popper
           open={open}

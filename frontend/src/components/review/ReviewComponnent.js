@@ -14,8 +14,10 @@ import axios from "axios";
 export default function ReviewComponnent({contents_id},props) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [list,setList] = useState([]);
+    const [list2,setList2] = useState([]);
     const [re_id,setRe_id] = useState('');
     const menuopen = Boolean(anchorEl);
+    const [state,setState] = useState(0);
     const form = useRef();
     const ax = (contents_id) =>{
         if(contents_id !== ''){
@@ -24,16 +26,14 @@ export default function ReviewComponnent({contents_id},props) {
                 url : API_BASE_URL + '/review/list',
                 params : {contents_id : contents_id}
             }).then(res => {
-                setList(prevList => {
-                    return [...new Set([...prevList, ...res.data.map(l => l)])]
-                })
+                setList(res.data)
             })
         }
         
     }
     useEffect(() => {
         ax(contents_id)
-    },[contents_id])
+    },[contents_id,state])
 
     const options = [
         "신고", "수정", "삭제"
@@ -120,43 +120,55 @@ export default function ReviewComponnent({contents_id},props) {
     }));
 
     const [comment, setComment] = useState('');
-
+    const inputRef = useRef(null);
+    const [v,setV] = useState('');
     const onChangeComment = (e) => {
         const comment = e.target.value;
+        setV(e.target)
         setComment(comment);
     };
 
     const createReview = (e) => {
         let i = reviewService.createReview(contents_id, comment);
-        if(i===-1){
-            alert("로그인이 필요합니다.")
-        }else if(i===0){
-            alert("댓글 작성 실패!!")
-        }else if(i===1){
-            alert("댓글 작성 성공!!!")
-        }
+        v.value="";
+        axios({
+            method : 'GET',
+            url : API_BASE_URL + '/review/list',
+            params : {contents_id : contents_id}
+        }).then(res => {
+            setList(res.data)
+            setState(state+1);
+        })
+        
     }
 
     const modifyReview = (e) => {
         let i = reviewService.modifyReview(re_id, comment);
-        if(i===-1){
-            alert("로그인이 필요합니다.")
-        }else if(i===0){
-            alert("댓글 작성 실패!!")
-        }else if(i===1){
-            alert("댓글 작성 성공!!!")
-        }
+        axios({
+            method : 'GET',
+            url : API_BASE_URL + '/review/list',
+            params : {contents_id : contents_id}
+        }).then(res => {
+            setList2(prevList => {
+                return [...new Set([...prevList, ...res.data.map(l => l)])]
+            })
+            
+            setList(list2)
+            setList2([])
+            setState(1);
+        })
     }
 
     const deleteReview = (e) => {
         let i = reviewService.deleteReview(re_id);
-        if(i===-1){
-            alert("로그인이 필요합니다.")
-        }else if(i===0){
-            alert("댓글 작성 실패!!")
-        }else if(i===1){
-            alert("댓글 작성 성공!!!")
-        }
+        axios({
+            method : 'GET',
+            url : API_BASE_URL + '/review/list',
+            params : {contents_id : contents_id}
+        }).then(res => {
+            setList(res.data)
+            setState(state+1);
+        })
     }
 
     const classes = useStyles();
@@ -171,13 +183,13 @@ export default function ReviewComponnent({contents_id},props) {
     };
 
 
-
-
+    
     return (
         <Grid item xs={12} sm={12}>
             <h2>리뷰</h2>
             <Form className={classes.form} ref={form} onsubmit={createReview}>
             <TextField
+                ref={inputRef}
                 className={classes.margin}
                 id="input-with-icon-textfield"
                 label="댓글을 작성해 주세요"
@@ -195,10 +207,10 @@ export default function ReviewComponnent({contents_id},props) {
             />
             </Form>
             <Grid>
-                <List className={classes.commentList}>
+                <List className={classes.commentList} id="re">
                 {list&&list.map((l) => {
                     return <div key={l.review_id}>                    
-                    <ListItem alignItems="flex-start">
+                    <ListItem key={l.review_id} alignItems="flex-start">
                         <ListItemText
                             primary={l.review_id}
                             secondary={
@@ -235,16 +247,6 @@ export default function ReviewComponnent({contents_id},props) {
                                     horizontal: 'right',
                                 }}
                             >
-                                {/* {options.map((option) => (
-                                    <MenuItem
-                                        key={option}
-                                        selected={option === "Pyxis"}
-                                        onClick={menuHandleClose}
-                                        data-msg={l.review_id}
-                                    >
-                                        {option}
-                                    </MenuItem>
-                                ))} */}
                                 <MenuItem onClick={modifyReview}>
                                     수정
                                 </MenuItem>

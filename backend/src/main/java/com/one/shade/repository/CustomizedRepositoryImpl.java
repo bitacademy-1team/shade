@@ -5,6 +5,7 @@ import com.one.shade.util.PredicateQuery;
 import com.one.shade.vo.ContentsListVO;
 import com.one.shade.vo.ReviewsListVO;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Pageable;
 
@@ -47,6 +48,18 @@ public class CustomizedRepositoryImpl implements CustomizedRepository{
                 .where(QReviews.reviews.contentsId.eq(contents_id).and(QReviews.reviews.deleteCheck.eq("N")))
                 .orderBy(QReviews.reviews.createDate.desc())
                 .fetch();
+        return list;
+    }
+
+    @Override
+    public List<Contents> likeList(Long id, String like){
+        List<Contents> list =  queryFactory.selectFrom(QContents.contents)
+                .where(QContents.contents.contents_id.in(
+                        JPAExpressions.select(QContentsUser.contentsUser.contents_id)
+                                .from(QContentsUser.contentsUser)
+                                .where(QContentsUser.contentsUser.id.eq(id).and(QContentsUser.contentsUser.check_like.eq(like)))
+                )).fetch();
+
         return list;
     }
 

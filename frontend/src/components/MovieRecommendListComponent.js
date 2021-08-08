@@ -71,7 +71,7 @@ function SamplePrevArrow(props) {
   );
 }
 
-export default function MovieRecommendComponent() {
+export default function MovieRecommendComponent(props) {
   
   const classes = useStyles();
   const {
@@ -84,10 +84,10 @@ export default function MovieRecommendComponent() {
 
   useEffect(() =>{
     if(msg==='데이터가 부족합니다!'){
-      alert("에러!!")
-      this.props.history.push("/movieList")
+      alert('영화 관심 설정을 10개이상 해주세요.')
+      props.history.push("/movieList")
     }
-  },[msg])
+  },[msg, props.history])
 
   const settings = {
     dots: true,
@@ -143,16 +143,20 @@ export default function MovieRecommendComponent() {
             <h3>{l.title}</h3>
             <Slider {...settings}>
               {contents.map(k => (
-                <h3 key={k.contents_id}>{k.title}</h3>
+                <CardMedia
+                className={classes.media}
+                title={l.title}
+                image={'https://images.justwatch.com' + k.poster}
+              />
               ))}
-              <Grid item xs={6} sm={3} md={2}>
+              <Grid >
                 <Card className={classes.card} >
                   <CardActionArea type="button">
                     <Link to={'/moviedetail/'}>
                       <CardMedia
                         className={classes.media}
                         title="contents_id"
-                        image={'https://images.justwatch.com'}
+                        // image={'https://images.justwatch.com/poster/204867081/s332'}
                       >
                       </CardMedia>
                     </Link>
@@ -171,7 +175,7 @@ export default function MovieRecommendComponent() {
         )}
 
 
-        <br /><br /><br /><br /><br /><br />
+        {/* <br /><br /><br /><br /><br /><br />
         <div>
           <h3>TV 추천</h3>
           <Slider {...settings}>
@@ -228,7 +232,7 @@ export default function MovieRecommendComponent() {
               </Card>
             </Grid>
           </Slider>
-        </div>
+        </div> */}
       </Container>
     </div>
   );

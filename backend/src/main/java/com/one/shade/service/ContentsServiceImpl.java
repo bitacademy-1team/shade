@@ -93,4 +93,19 @@ public class ContentsServiceImpl  implements ContentsService{
     public int ContentsVisit(Long contents_id){
         return contentsRepository.ContentsVisit(contents_id);
     }
+
+    @Transactional
+    @Override
+    public List<ContentsListVO> likeList(Long id, String like){
+
+        List<Contents> list =  contentsRepository.likeList(id,like);
+        List<ContentsListVO> list2 = list.stream().map(
+                contents -> new ContentsListVO(
+                        contents.getContents_id(),
+                        contents.getTitle(),
+                        contents.getPoster()
+                )).collect(Collectors.toList());
+        System.out.println(list2);
+        return list2;
+    }
 }

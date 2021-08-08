@@ -2,15 +2,18 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { API_BASE_URL, ACCESS_TOKEN } from '../service/oauth2/OAuth';
 
-export default function ExContentsService(query, pageNumber, object_type) {
+export default function ExContentsService(query, pageNumber, object_type, platform_ids, state4) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [list, setList] = useState([]);
     const [hasMore, setHasMore] = useState(false);
-    
+    const [platform_idss,setPlatform_idss] =useState(platform_ids)
+    const [state,setState] = useState(1)
     useEffect(() => {
         setList([])
-    }, [query])
+        setPlatform_idss(platform_ids)
+        setState(state4)
+    }, [query, platform_ids, state4])
     
     useEffect(() => {
         setLoading(true)
@@ -23,7 +26,7 @@ export default function ExContentsService(query, pageNumber, object_type) {
         axios({
             method: 'GET',
             url: API_BASE_URL+'/movieList',
-            params: {page: pageNumber*20,size:20,object_type:object_type},
+            params: {page: pageNumber*20,size:20,object_type:object_type,platform_ids:platform_ids},
             headers: {
                 'Authorization': 'Bearer '+token,
                 'Content-Type': 'application/json'
@@ -41,6 +44,6 @@ export default function ExContentsService(query, pageNumber, object_type) {
             setError(true)
         })
         return () => cancel()
-    }, [query, pageNumber, object_type])
-    return { loading, error, list, hasMore }
+    }, [query, pageNumber, object_type, platform_idss, platform_ids,state])
+    return { loading, error, list, hasMore}
 }

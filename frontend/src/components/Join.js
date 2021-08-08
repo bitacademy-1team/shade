@@ -231,8 +231,8 @@ export default function Join(props) {
               </Grid>
 
               <RadioGroup aria-label="gender" name="gender1" value={gender} onChange={onChangeGender}>
-              <FormControlLabel value="MALE" control={<Radio />} label="남자" />
-              <FormControlLabel value="FEMALE" control={<Radio />} label="여자" />             
+              <FormControlLabel value="M" control={<Radio />} label="남자" />
+              <FormControlLabel value="F" control={<Radio />} label="여자" />             
               </RadioGroup>
 
               <Button

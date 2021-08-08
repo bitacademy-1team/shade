@@ -1,28 +1,23 @@
-version : "3.2"
+version : "2.2"
 services :
-    
     spring-boot :
-        build:
-            context: ./backend
-            dockerfile: Dockerfile
-        image: wlgud30/shade-spring-boot:1.2
+        image: wlgud30/spring-shade:3.4
         ports:
-            - "8080:8080"
-        container_name: shade-spring-boot
-        environment:
-            SPRING_DATASOURCE_URL: jdbc:mysql://shade.cbxhaf2v5wmc.ap-northeast-2.rds.amazonaws.com:3306/shade?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&characterEncoding=utf8
-            SPRING_DATASOURCE_USERNAME: root
-            SPRING_DATASOURCE_PASSWORD: shade1234
+               - "8080:8080"
+
+    django :
+        image : wlgud30/django-shade:1.0
+        ports:
+               - "8000:8000"
 
     react :
-        build:
-            context: ./frontend
-            dockerfile: Dockerfile
-        image: wlgud30/shade-react-nginx:1.6
+        image: wlgud30/react-shade:3.2
         ports:
-            - 3000:3000
-        working_dir: /usr/src/app
-        volumes:
-            - ./frontend:/usr/src/app
-            - /usr/src/app/node_modules
-        container_name: shade-react-nginx
+               - "80:80"
+        # volumes:
+        #     - ./frontend:/usr/src/app
+        #     - ./frontend/static_root:/static
+        #     - /usr/src/app/node_modules
+        depends_on:
+            - spring-boot
+            - django

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-//@CrossOrigin(origins = "http://52.79.189.13")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://52.79.189.13")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api")
 @RestController
 public class ReviewController {
@@ -56,9 +56,11 @@ public class ReviewController {
     public int reviewDelete(Long review_id , @CurrentUser PrincipalDetails principalDetails){
         Long id = 0l ;
         if(principalDetails == null){
+            System.out.println("리뷰 딜리트 입니다 ===============");
             return -1;
         }else{
             id = principalDetails.getId();
+            System.out.println("=============== 딜리트 아이디 : "+id);
         }
 
         int result  = reviewsService.reviewDelete(review_id,id);

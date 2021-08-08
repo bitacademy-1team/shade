@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-//@CrossOrigin(origins = "http://52.79.189.13")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://52.79.189.13")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api")
 public class ContentsController {
@@ -87,10 +87,18 @@ public class ContentsController {
     }
 
     @GetMapping("/movieList")
-    public List<ContentsListVO> movieList(@PageableDefault(page = 0) Pageable pageRequest,@CurrentUser PrincipalDetails principalDetails,@RequestParam("object_type") String object_type){
+    public List<ContentsListVO> movieList(@PageableDefault(page = 0) Pageable pageRequest,@CurrentUser PrincipalDetails principalDetails,@RequestParam("object_type") String object_type,@RequestParam( required = false,name = "platform_ids") String platform_idss){
+        System.out.println("플랫폼 : "+platform_idss);
         List<Long> platform_ids = new ArrayList<>();
-        platform_ids.add(8l);
-        Long genre_id = 3l;
+        if(platform_idss != null){
+            List<String> str = Arrays.asList(platform_idss.split(","));
+            for(String s :str){
+                platform_ids.add(Long.valueOf(s));
+            }
+        }else{
+            platform_ids = null;
+        }
+        Long genre_id = null;
         System.out.println("object type : "+object_type);
 //        String object_type = "movie";
         System.out.println(pageRequest);
@@ -101,6 +109,15 @@ public class ContentsController {
         System.out.println("movie List id : "+id);
         System.out.println();
         return contentsService.movieList(pageRequest,platform_ids,genre_id,object_type,id);
+    }
+
+    @GetMapping("/likeList")
+    public List<ContentsListVO> likeList(@CurrentUser PrincipalDetails principalDetails, String like){
+        if(principalDetails== null){
+            return null;
+        }else{
+            return contentsService.likeList(principalDetails.getId(), like);
+        }
     }
 
     @GetMapping("/movieDetail")

@@ -67,7 +67,7 @@ public class ReviewsServiceImpl implements ReviewsService{
 
         Optional<Reviews> review = reviewsRepository.findByReviewId(review_id);
 
-        if(review.isPresent()&&review.get().getId()==id){
+        if(review.isPresent()&&review.get().getId().equals(id)){
             review.get().setDeleteCheck("Y");
             review.get().setModify_date(LocalDateTime.now().toString());
             Reviews re = reviewsRepository.save(review.get());

@@ -15,7 +15,6 @@ const createReview = (contents_id,comment) =>{
             'Content-Type': 'application/json'
         }
     }).then(res => {
-        alert(res.data)
         result = res.data
     })
     return result;
@@ -32,7 +31,6 @@ const modifyReview = (review_id,comment) =>{
             'Content-Type': 'application/json'
         }
     }).then(res => {
-        alert(res.data)
         result = res.data
     })
     return result;
@@ -49,7 +47,6 @@ const deleteReview = (review_id) =>{
             'Content-Type': 'application/json'
         }
     }).then(res => {
-        alert(res.data)
         result = res.data
     })
     return result;

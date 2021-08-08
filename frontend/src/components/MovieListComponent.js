@@ -177,13 +177,40 @@ export default function ContentList(props) {
   const [content_id,setContent_id] = useState('');
   const [detail_like,setDetail_like] = useState('');
   const [video,setVideo] = useState('');
+  const [nUrl,setnUrl] = useState('');
+  const [fUrl,setfUrl] = useState('');
+  const [wUrl,setwUrl] = useState('');
+  const [wcUrl,setwcUrl] = useState('');
+  const [gUrl,setgUrl] = useState('');
+  const [platform_ids,setPlatform_ids] = useState([]);
+  const [state,setState] = useState(0)
   //  리스트 무한스크롤 (ContentsService, lastPageElementRef)
+  useEffect(()=>{
+    
+  },[platform_ids,state])
+
   const {
     list,
     hasMore,
     loading,
     error
-  } = ContentsService(query, pageNumber , 'movie')
+  } = ContentsService(query, pageNumber , 'movie',platform_ids,state)
+
+  const stateUpdate = () => {
+    setState(state+1)
+  }
+
+  const getList = (data) => {
+    let arr = data;
+    let str = "";
+    for(let i = 0 ; i<arr.length;i++){
+      if(arr[i] !== 0){
+        str = str+arr[i]+","
+      }
+    }
+    str = str.slice(0,-1)
+    setPlatform_ids(str)
+  }
 
   const observer = useRef()
   const lastPageElementRef = useCallback(node => {
@@ -216,11 +243,30 @@ export default function ContentList(props) {
   useEffect(() =>{
     if(content_id!=='' && content_id!== undefined){
       MovieDetailService.getMovieDetail(content_id).then(res => {
+        let arr;
+        if(res.data.urls !== null){
+          arr = res.data.urls.split(",");
+          for(let i = 0 ; i< arr.length; i++){
+            if(arr[i].includes('naver')){
+              setnUrl(arr[i])
+            }else if(arr[i].includes('netflix')){
+              setfUrl(arr[i])
+            }else if(arr[i].includes('wavve')){
+              setwUrl(arr[i])
+            }else if(arr[i].includes('watcha')){
+              setwcUrl(arr[i])
+            }else if(arr[i].includes('google')){
+              setgUrl(arr[i])
+            }
+          }
+        }
+        
         setMovieDetail(res.data)
       });
     }
     
   },[content_id, open])
+
   const handleClose = () => {
     setContent_id('');
     setMovieDetail({});
@@ -233,11 +279,17 @@ export default function ContentList(props) {
 
     alert(result)
   }
+  
+  const li = (url) =>{
+    if(url!==undefined && url !== ''){
+      window.open(url,'_blank')
+    }
+  }
 
   return (
     <React.Fragment>
       <CssBaseline />
-      <MovielistPlatform />
+      <MovielistPlatform getList={getList}/>
       <main>
         <Toolbar id="back-to-top-anchor" />
         <Container className={classes.cardGrid} maxWidth="lg">
@@ -286,7 +338,7 @@ export default function ContentList(props) {
                                 <div>
                                   <h1>{movieDetail.title}</h1>
                                   <Box className={classes.like}>
-                                  <LikeDislikes check_like={movieDetail.check_like} contents_id={content_id} />
+                                  <LikeDislikes check_like={movieDetail.check_like} contents_id={content_id} stateupdate = {stateUpdate}/>
                                     {/* <IconButton><ThumbUpIcon/></IconButton>
                                       <IconButton><ThumbDownIcon  color="secondary"/></IconButton> */}
                                   </Box>
@@ -314,24 +366,34 @@ export default function ContentList(props) {
                                 <Table className={classes.table} aria-label="Flat rate" >
                                   <TableHead>
                                     <TableRow>
-                                      <TableCell align="center">
+                                      {nUrl ? (
+                                      <TableCell align="center" onClick={() => li(nUrl)}>
                                         <img className={classes.platformimg} src={Naver} alt="네이버" />
                                       </TableCell>
-                                      <TableCell align="center">
+                                      ):(<p></p>)}
+                                      {gUrl ? (
+                                      <TableCell align="center" onClick={() => li(gUrl)}>
                                         <img className={classes.platformimg} src={Google} alt="구글" />
                                       </TableCell>
-                                      <TableCell align="center">
+                                      ):(<p></p>)}
+                                      {wUrl ? (
+                                      <TableCell align="center" onClick={() => li(wUrl)}>
                                         <img className={classes.platformimg} src={Wavve} alt="웨이브" />
                                       </TableCell>
-                                      <TableCell align="center">
+                                      ):(<p></p>)}
+                                      {fUrl ? (
+                                      <TableCell align="center" onClick={() => li(fUrl)}>
                                         <img className={classes.platformimg} src={Netflix} alt="넷플릭스" />
                                       </TableCell>
-                                      <TableCell align="center">
+                                      ):(<p></p>)}
+                                      {wcUrl ? (
+                                      <TableCell align="center" onClick={() => li(wcUrl)}>
                                         <img className={classes.platformimg} src={Watcha} alt="왓챠" />
                                       </TableCell>
+                                      ):(<p></p>)}
                                     </TableRow>
                                   </TableHead>
-                                  <TableBody>
+                                  {/* <TableBody>
                                     {rows.map((row) => (
                                       <TableRow key={row.name}>
                                         <TableCell align="center">{row.naver}</TableCell>
@@ -341,11 +403,11 @@ export default function ContentList(props) {
                                         <TableCell align="center">{row.watcha}</TableCell>
                                       </TableRow>
                                     ))}
-                                  </TableBody>
+                                  </TableBody> */}
                                 </Table>
                               </TableContainer>
                               <caption className={classes.caption}>* 이미지 클릭시 해당 사이트로 이동됩니다.</caption> <br />
-                              <caption className={classes.caption}>* SD, HD, 4K는 해상도를 의미합니다.</caption> <br /><br />
+                              {/* <caption className={classes.caption}>* SD, HD, 4K는 해상도를 의미합니다.</caption> <br /><br /> */}
                             </Grid>
                             <ReviewComponnent contents_id = {content_id} />
                           </Grid>

@@ -5,7 +5,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import { API_BASE_URL, ACCESS_TOKEN } from '../../../../service/oauth2/OAuth';
 import axios from "axios";
 
-export default function LikeDislikes({ check_like, contents_id },l) {
+export default function LikeDislikes({ check_like, contents_id },l,props) {
   const [Color,setColor] = useState(check_like);
 
   let url
@@ -17,6 +17,10 @@ export default function LikeDislikes({ check_like, contents_id },l) {
 
   if (localStorage.getItem(ACCESS_TOKEN)) {
     token = localStorage.getItem(ACCESS_TOKEN);
+  }
+
+  const stateUpdate = () => {
+    props.stateUpdate();
   }
 
   const onLike = (like) => {
@@ -31,6 +35,7 @@ export default function LikeDislikes({ check_like, contents_id },l) {
     }).then(res =>{
       setColor(like)
       console.log("hey!!" + JSON.stringify(res))
+      stateUpdate()
     }).catch(e => {
       if(axios.isCancel(e)) return console.log("error")
     })
