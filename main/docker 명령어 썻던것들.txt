@@ -1,0 +1,7 @@
+docker-compose up
+docker-compose build
+
+docker-compose up
+docker build --tag shade-springboot:0.0.1 .
+docker exec -it shade-mysql bash
+docker build --tag shade-django:0.0.2 .
